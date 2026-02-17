@@ -97,7 +97,7 @@ lab11-password-cracking-hashcat/
 ├── README.md
 ├── commands.sh
 ├── output.txt
-├── interview.md
+├── interview_qna.md
 ├── troubleshooting.md
 │
 ├── hashes/
