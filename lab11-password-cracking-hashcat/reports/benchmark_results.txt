@@ -1,0 +1,11 @@
+Benchmarking MD5 (Hash mode 0):
+Speed.#1.........:  28.5 GH/s
+
+Benchmarking SHA-256 (Hash mode 1400):
+Speed.#1.........:  950 MH/s
+
+Benchmarking NTLM (Hash mode 1000):
+Speed.#1.........:  32.8 GH/s
+
+Benchmarking bcrypt (Hash mode 3200):
+Speed.#1.........:  950 H/s
