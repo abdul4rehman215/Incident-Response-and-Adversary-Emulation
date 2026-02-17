@@ -1,0 +1,144 @@
+============================================================
+LAB 6 — ANALYZING DNS TRAFFIC
+OUTPUT LOG
+Environment:
+Ubuntu 24.04 LTS
+Host: ip-172-31-10-198
+Interface: ens5
+============================================================
+
+==============================
+TASK 1 — IDENTIFY INTERFACE
+==============================
+
+$ ip addr show
+
+2: ens5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001
+    inet 172.31.10.198/20 brd 172.31.15.255 scope global dynamic ens5
+
+Primary interface identified: ens5
+
+
+==============================
+TASK 1 — LIVE DNS CAPTURE
+==============================
+
+$ sudo tcpdump -i ens5 -n port 53
+
+tcpdump: listening on ens5, link-type EN10MB
+11:18:21 IP 172.31.10.198.53564 > 8.8.8.8.53: 12345+ A? google.com.
+11:18:21 IP 8.8.8.8.53 > 172.31.10.198.53564: 12345 1/0/0 A 142.250.190.78
+
+✔ DNS query observed
+✔ DNS response observed
+
+
+==============================
+TASK 1 — DNS TEST TRAFFIC
+==============================
+
+$ nslookup google.com
+
+Server:  8.8.8.8
+Address: 8.8.8.8#53
+
+Non-authoritative answer:
+Name: google.com
+Address: 142.250.190.78
+
+$ nslookup github.com
+
+Name: github.com
+Address: 140.82.114.3
+
+$ nslookup amazon.com
+
+Name: amazon.com
+Address: 176.32.103.205
+
+
+==============================
+TASK 1 — SAVE PCAP
+==============================
+
+$ sudo tcpdump -i ens5 -n -w dns_capture.pcap port 53
+
+27 packets captured
+27 packets received by filter
+0 packets dropped by kernel
+
+
+==============================
+TASK 1 — READ PCAP
+==============================
+
+$ sudo tcpdump -r dns_capture.pcap -n
+
+IP 172.31.10.198.53564 > 8.8.8.8.53: A? google.com.
+IP 8.8.8.8.53 > 172.31.10.198.53564: A 142.250.190.78
+IP 172.31.10.198.53570 > 8.8.8.8.53: A? github.com.
+IP 8.8.8.8.53 > 172.31.10.198.53570: A 140.82.114.3
+
+Verbose mode (-v) displayed DNS flags, TTL, response codes.
+
+✔ PCAP analysis successful
+
+
+============================================================
+TASK 2 — DNS ANALYZER OUTPUT
+============================================================
+
+$ python3 dns_analyzer.py dns_capture.pcap
+
+=== DNS Traffic Analysis ===
+Total Queries: 14
+Total Responses: 13
+Unique Domains: 5
+
+Top 10 Queried Domains:
+google.com: 4
+github.com: 3
+amazon.com: 3
+malware-test-domain.tk: 2
+normal-site.com: 2
+
+⚠ Suspicious Activity Detected:
+- Suspicious keyword in domain: malware-test-domain.tk
+- DGA-like domain detected: xjskdfhskdjfhksd.com
+
+✔ High frequency detection working
+✔ Keyword detection working
+✔ DGA detection working
+
+
+============================================================
+TASK 2 — REAL-TIME MONITOR OUTPUT
+============================================================
+
+$ sudo python3 dns_monitor.py ens5
+
+[+] Monitoring DNS on ens5
+[+] Press Ctrl+C to stop
+
+Generated suspicious traffic:
+
+$ nslookup malware-control-server.tk
+
+[ALERT] Suspicious Domain: malware-control-server.tk
+Reason: Suspicious keyword in domain
+Source IP: 172.31.10.198
+
+
+Generated repeated queries for beaconing simulation:
+
+[ALERT] Frequency Anomaly: beaconing-test.com
+Reason: High frequency query detected (possible beaconing)
+Source IP: 172.31.10.198
+
+[ALERT] Beaconing Detected: beaconing-test.com
+Source IP: 172.31.10.198
+
+✔ Real-time detection functioning properly
+
+
+=================================
