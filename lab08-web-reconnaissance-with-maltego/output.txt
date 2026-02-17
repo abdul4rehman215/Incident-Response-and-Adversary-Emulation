@@ -1,0 +1,243 @@
+============================================================
+Task 1: System Update
+============================================================
+
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Calculating upgrade... Done
+0 upgraded, 0 newly installed, 0 to remove.
+
+============================================================
+Java Installation
+============================================================
+
+Setting up openjdk-21-jre...
+Setting up openjdk-21-jdk...
+Setting up default-jre...
+Setting up default-jdk...
+
+java -version
+
+openjdk version "21.0.2" 2025-01-16
+OpenJDK Runtime Environment (build 21.0.2+13-Ubuntu-0ubuntu124.04)
+OpenJDK 64-Bit Server VM (build 21.0.2+13-Ubuntu-0ubuntu124.04, mixed mode)
+
+============================================================
+Maltego Download
+============================================================
+
+Saving to: ‘Maltego.v4.5.0.deb’
+Maltego.v4.5.0.deb 100%[===================>] 220M  9.2MB/s  in 24s
+
+============================================================
+Maltego Installation
+============================================================
+
+Selecting previously unselected package maltego.
+Unpacking maltego (4.5.0) ...
+Setting up maltego (4.5.0) ...
+
+maltego --version
+
+Maltego Community Edition 4.5.0
+
+============================================================
+Supporting OSINT Tools Installation
+============================================================
+
+Setting up theharvester (4.4.0) ...
+Cloning into 'Sublist3r'...
+Successfully installed requests dnspython...
+Cloning into 'recon-ng'...
+Successfully installed requests...
+Successfully installed shodan-1.31.0
+Setting up dnsrecon (1.1.4-1) ...
+
+============================================================
+Launching Maltego
+============================================================
+
+[1] 4832
+Starting Maltego Community Edition...
+Loading modules...
+Launching GUI...
+
+============================================================
+theHarvester Execution
+============================================================
+
+[*] Target: example-target.com
+[*] Searching Google...
+[*] Searching Bing...
+[*] Searching Yahoo...
+
+Emails found:
+admin@example-target.com
+info@example-target.com
+support@example-target.com
+security@example-target.com
+
+============================================================
+Sublist3r Execution
+============================================================
+
+[-] Enumerating subdomains...
+[+] www.example-target.com
+[+] api.example-target.com
+[+] dev.example-target.com
+[+] portal.example-target.com
+[+] mail.example-target.com
+
+============================================================
+DNSrecon Output
+============================================================
+
+[*] A records:
+example-target.com 93.184.216.34
+
+[*] MX records:
+mail.example-target.com
+
+[*] NS records:
+ns1.example-target.com
+ns2.example-target.com
+
+[*] Attempting AXFR...
+[!] Zone transfer failed.
+
+============================================================
+Recon-ng Console Execution
+============================================================
+
+Recon-ng v5.1.0
+[recon-ng][default] > marketplace install hackertarget
+[+] Module installed successfully.
+
+[recon-ng][default] > modules load recon/domains-hosts/hackertarget
+[recon-ng][default][hackertarget] > options set SOURCE example-target.com
+[recon-ng][hackertarget] > run
+
+Hosts discovered:
+www.example-target.com
+api.example-target.com
+mail.example-target.com
+
+============================================================
+Recon-ng Automation Script
+============================================================
+
+[+] Installing hackertarget module...
+[+] Loading module...
+[+] Setting SOURCE to example-target.com
+[+] Running module...
+
+Hosts:
+www.example-target.com
+api.example-target.com
+mail.example-target.com
+
+[+] Recon-ng automation completed successfully.
+
+============================================================
+Email Analysis Script Output
+============================================================
+
+Email Analysis Results:
+==================================================
+
+Domain: example-target.com
+Email count: 4
+Emails:
+ - admin@example-target.com
+ - info@example-target.com
+ - support@example-target.com
+ - security@example-target.com
+
+============================================================
+Network Analysis Script Output
+============================================================
+
+Analyzing 8.8.8.8:
+ range: 8.8.8.0 - 8.8.8.255
+ org: Google LLC
+ country: US
+
+Analyzing 1.1.1.1:
+ range: 1.1.1.0 - 1.1.1.255
+ org: Cloudflare, Inc.
+ country: US
+
+============================================================
+Custom Maltego Transform Output
+============================================================
+
+<MaltegoMessage>
+  <MaltegoTransformResponseMessage>
+    <Entities>
+      <Entity Type="maltego.Domain">
+        <Value>api.example-target.com</Value>
+      </Entity>
+      <Entity Type="maltego.Domain">
+        <Value>dev.example-target.com</Value>
+      </Entity>
+      <Entity Type="maltego.Domain">
+        <Value>portal.example-target.com</Value>
+      </Entity>
+    </Entities>
+  </MaltegoTransformResponseMessage>
+</MaltegoMessage>
+
+============================================================
+Maltego Report Generator
+============================================================
+
+Report generated: reconnaissance_report.html
+
+============================================================
+Integration Verification Script
+============================================================
+
+Maltego OSINT Integration Verification
+==================================================
+Testing Java Runtime Environment...
+ ✓ Java Runtime Environment - PASSED
+Testing Maltego Installation...
+ ✓ Maltego Installation - PASSED
+Testing theHarvester Tool...
+ ✓ theHarvester Tool - PASSED
+Testing Sublist3r Tool...
+ ✓ Sublist3r Tool - PASSED
+Testing DNSrecon Tool...
+ ✓ DNSrecon Tool - PASSED
+Testing Shodan CLI...
+ ✓ Shodan CLI - PASSED
+Testing Recon-ng Framework...
+ ✓ Recon-ng Framework - PASSED
+
+==================================================
+Verification Results: 7/7 tests passed
+✓ All tools are properly integrated and ready for use!
+
+============================================================
+Performance Testing
+============================================================
+
+Performance Testing OSINT Tools
+========================================
+
+Testing theHarvester...
+ Average execution time: 3.42 seconds
+
+Testing DNSrecon...
+ Average execution time: 2.81 seconds
+
+Testing DNS Lookup...
+ Average execution time: 0.18 seconds
+
+============================================================
+End of Lab 08 Output
+============================================================
