@@ -1,6 +1,6 @@
 # 🛠 Troubleshooting Guide – Lab 07: OSINT with theHarvester
 
-This document outlines common issues encountered during installation, execution, automation, and reporting when using theHarvester and related scripts.
+> This document outlines common issues encountered during installation, execution, automation, and reporting when using theHarvester and related scripts.
 
 ---
 
