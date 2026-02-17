@@ -1,0 +1,10 @@
+password
+123456
+password123
+admin
+admin2023
+welcome
+qwerty
+letmein
+monkey
+dragon
