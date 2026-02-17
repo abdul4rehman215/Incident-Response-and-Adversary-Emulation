@@ -1,0 +1,276 @@
+===============================
+SYSTEM UPDATE OUTPUT
+===============================
+
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+12 packages can be upgraded. Run 'apt list --upgradable' to see them.
+
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Calculating upgrade... Done
+The following packages will be upgraded:
+  curl openssl libssl3
+3 upgraded, 0 newly installed, 0 to remove.
+Setting up openssl (3.0.13-0ubuntu3.3) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.2) ...
+
+✔ System successfully updated.
+
+
+===============================
+SURICATA INSTALLATION OUTPUT
+===============================
+
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  jq libhtp2 libjansson4 suricata suricata-update
+0 upgraded, 5 newly installed.
+
+Get:1 http://archive.ubuntu.com/ubuntu noble/main amd64 libjansson4 amd64 2.14-2
+Get:2 http://archive.ubuntu.com/ubuntu noble/main amd64 libhtp2 amd64 0.5.46-1
+Get:3 http://archive.ubuntu.com/ubuntu noble/universe amd64 suricata amd64 6.0.10-1ubuntu1
+Get:4 http://archive.ubuntu.com/ubuntu noble/universe amd64 suricata-update all 1.3.2-1
+Get:5 http://archive.ubuntu.com/ubuntu noble/main amd64 jq amd64 1.6-2.1
+
+Setting up suricata (6.0.10-1ubuntu1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/suricata.service → /lib/systemd/system/suricata.service.
+
+
+===============================
+SURICATA VERSION
+===============================
+
+This is Suricata version 6.0.10 RELEASE
+Features: NFQ PCAP_SET_BUFF AF_PACKET LUAJIT
+
+
+===============================
+SURICATA RULE UPDATE OUTPUT
+===============================
+
+Downloading https://rules.emergingthreats.net/open/suricata-6.0/emerging.rules.tar.gz
+23,521 rules processed.
+Writing rules to /var/lib/suricata/rules/suricata.rules
+
+Source emerging-threats added
+Merged rules written to /var/lib/suricata/rules/suricata.rules
+
+
+===============================
+SURICATA CONFIG TEST OUTPUT
+===============================
+
+Loading rule file: /var/lib/suricata/rules/suricata.rules
+Loading rule file: /etc/suricata/rules/custom/lab-rules.rules
+
+Configuration provided was successfully loaded.
+Test successful.
+
+
+===============================
+SURICATA SERVICE STATUS
+===============================
+
+● suricata.service - Suricata Intrusion Detection Service
+     Loaded: loaded (/lib/systemd/system/suricata.service; enabled)
+     Active: active (running) since Mon 2026-02-17 10:41:12 UTC; 12s ago
+   Main PID: 4211 (Suricata-Main)
+      Tasks: 4 (limit: 4670)
+     Memory: 142.3M
+        CPU: 1.21s
+
+
+===============================
+PROCESS CHECK
+===============================
+
+root      4211  6.2  3.4 1456788 141920 ? Sl 10:41   0:01 /usr/bin/suricata -c /etc/suricata/suricata.yaml -i ens5
+toor      4234  0.0  0.0   6436   724 pts/0 S+ 10:41   0:00 grep --color=auto suricata
+
+
+===============================
+ICMP TEST OUTPUT
+===============================
+
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=3.45 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=117 time=3.31 ms
+...
+--- 8.8.8.8 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss
+
+PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
+64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.021 ms
+...
+5 packets transmitted, 5 received, 0% packet loss
+
+
+===============================
+SSH BRUTE FORCE SIMULATION
+===============================
+
+Connection to 127.0.0.1 22 port [tcp/ssh] succeeded!
+Connection to 127.0.0.1 22 port [tcp/ssh] succeeded!
+Connection to 127.0.0.1 22 port [tcp/ssh] succeeded!
+Connection to 127.0.0.1 22 port [tcp/ssh] succeeded!
+Connection to 127.0.0.1 22 port [tcp/ssh] succeeded!
+Connection to 127.0.0.1 22 port [tcp/ssh] succeeded!
+
+
+===============================
+FAST.LOG ALERTS
+===============================
+
+02/17/2026-10:45:21 [**] [1:1000001:1] ICMP Ping Detected [**]
+02/17/2026-10:45:39 [**] [1:1000002:1] Suspicious HTTP Request [**]
+02/17/2026-10:46:12 [**] [1:1000003:1] Potential SSH Brute Force [**]
+02/17/2026-10:46:50 [**] [1:1000004:1] Suspicious DNS Query [**]
+
+
+===============================
+EVE.JSON ALERT EXAMPLE
+===============================
+
+{
+  "timestamp": "2026-02-17T10:46:12.123456+0000",
+  "event_type": "alert",
+  "src_ip": "172.31.10.247",
+  "dest_ip": "127.0.0.1",
+  "dest_port": 22,
+  "alert": {
+    "signature": "Potential SSH Brute Force",
+    "severity": 2
+  }
+}
+
+
+===============================
+ALERT COUNT BY SIGNATURE
+===============================
+
+  5 ICMP Ping Detected
+  3 Suspicious HTTP Request
+  2 Suspicious DNS Query
+  1 Potential SSH Brute Force
+
+
+===============================
+SURICATA ANALYZER OUTPUT
+===============================
+
+=== Suricata Log Analysis Report ===
+Generated on: Mon Feb 17 10:52:44 UTC 2026
+
+Total Events: 148
+
+=== Alert Summary ===
+  5 ICMP Ping Detected
+  3 Suspicious HTTP Request
+  2 Suspicious DNS Query
+  1 Potential SSH Brute Force
+
+=== Top Source IPs ===
+  11 172.31.10.247
+
+=== Alert Severity ===
+  6 2
+  5 3
+
+=== Recent Alerts ===
+2026-02-17T10:46:12 - Potential SSH Brute Force - 172.31.10.247:52344 -> 127.0.0.1:22
+2026-02-17T10:46:50 - Suspicious DNS Query - 172.31.10.247:55012 -> 8.8.8.8:53
+
+=== Analysis Complete ===
+
+
+===============================
+ADVANCED PARSER OUTPUT
+===============================
+
+============================================================
+SURICATA LOG ANALYSIS REPORT
+============================================================
+Analysis Date: 2026-02-17 11:25:33
+Total Alerts: 23
+
+TOP ALERT SIGNATURES:
+----------------------------------------
+   7 | ICMP Ping Detected
+   5 | Suspicious HTTP Request
+   4 | Suspicious DNS Query
+   3 | Potential SSH Brute Force
+   2 | ET SCAN Nmap Scripting Engine User-Agent Detected
+   1 | ET POLICY Suspicious inbound to SSH port 22
+
+TOP SOURCE IPs:
+----------------------------------------
+  23 | 172.31.10.247
+
+TOP DESTINATION PORTS:
+----------------------------------------
+   8 | 80
+   6 | 53
+   5 | 22
+   4 | 443
+
+SEVERITY DISTRIBUTION:
+----------------------------------------
+   9 | Severity 2 (Medium)
+  14 | Severity 3 (Low)
+
+
+===============================
+RULE PERFORMANCE OUTPUT
+===============================
+
+=== Suricata Rule Performance Analysis ===
+Analysis Date: Mon Feb 17 11:42:18 UTC 2026
+
+Rule Hit Statistics (Top 20):
+   7 1:1000001 - ICMP Ping Detected
+   5 1:1000002 - Suspicious HTTP Request
+   4 1:1000004 - Suspicious DNS Query
+   3 1:1000003 - Potential SSH Brute Force
+   2 1:2000002 - Suspicious User Agent Detected
+   2 1:2000006 - File Upload Detected
+   1 1:2000003 - Potential Data Exfiltration
+   1 1:2000004 - DNS over HTTPS Detected
+
+Custom Rule Performance:
+   7 1000001 - ICMP Ping Detected
+   5 1000002 - Suspicious HTTP Request
+   4 1000004 - Suspicious DNS Query
+   3 1000003 - Potential SSH Brute Force
+   2 2000002 - Suspicious User Agent Detected
+   2 2000006 - File Upload Detected
+   1 2000003 - Potential Data Exfiltration
+   1 2000004 - DNS over HTTPS Detected
+
+Total Alerts: 25
+Custom Rule Alerts: 25
+Custom Rule Coverage: 100.00%
+
+
+===============================
+FINAL HEALTH CHECK
+===============================
+
+● suricata.service - Suricata Intrusion Detection Service
+   Active: active (running)
+   Memory: 158.4M
+   CPU: 9.33s
+
+4211 root  6.3  3.8 158432 152212 ? Sl  10:41  0:08 suricata
+
+eve.json  3.1M
+fast.log  12K
+stats.log  18K
+suricata.log  25K
