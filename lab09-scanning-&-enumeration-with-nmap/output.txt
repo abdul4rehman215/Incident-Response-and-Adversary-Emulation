@@ -1,0 +1,259 @@
+=========================================
+LAB 09 – SCANNING & ENUMERATION WITH NMAP
+Complete Execution Output Log
+=========================================
+
+-------------------------------------------------
+1️⃣ Nmap Installation Verification
+-------------------------------------------------
+
+$ nmap --version
+Nmap version 7.94 ( https://nmap.org )
+Platform: x86_64-pc-linux-gnu
+Compiled with: liblua-5.4.4 openssl-3.0.13 libssh2-1.11.0
+
+$ which nmap
+/usr/bin/nmap
+
+-------------------------------------------------
+2️⃣ Network Information
+-------------------------------------------------
+
+$ hostname -I
+172.31.10.233
+
+$ ip addr show
+2: ens5: <BROADCAST,MULTICAST,UP,LOWER_UP>
+    inet 172.31.10.233/20 brd 172.31.15.255
+
+-------------------------------------------------
+3️⃣ Host Discovery
+-------------------------------------------------
+
+$ nmap -sn 127.0.0.0/24
+Nmap scan report for 127.0.0.1
+Host is up.
+Nmap done: 256 IP addresses (1 host up) scanned
+
+$ nmap -sn 127.0.0.1
+Host is up (0.0000040s latency).
+
+$ sudo nmap -PR 127.0.0.1
+Host is up.
+
+-------------------------------------------------
+4️⃣ Basic Port Scanning
+-------------------------------------------------
+
+$ nmap 127.0.0.1
+
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+631/tcp  open  ipp
+
+$ nmap -p 22,80,443,3306 127.0.0.1
+
+PORT     STATE  SERVICE
+22/tcp   open   ssh
+80/tcp   open   http
+443/tcp  closed https
+3306/tcp closed mysql
+
+$ nmap -p 1-1000 127.0.0.1
+
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+631/tcp  open  ipp
+
+$ nmap -p- 127.0.0.1
+
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+631/tcp  open  ipp
+8080/tcp open  http-proxy
+
+-------------------------------------------------
+5️⃣ Advanced Scanning
+-------------------------------------------------
+
+$ sudo nmap -sS 127.0.0.1
+
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+631/tcp  open  ipp
+
+$ sudo nmap -sU 127.0.0.1
+
+PORT      STATE         SERVICE
+68/udp    open|filtered dhcpc
+123/udp   closed        ntp
+631/udp   open          ipp
+
+$ sudo nmap -sS -sU -p 1-100 127.0.0.1
+
+PORT     STATE         SERVICE
+22/tcp   open          ssh
+80/tcp   open          http
+68/udp   open|filtered dhcpc
+
+-------------------------------------------------
+6️⃣ Aggressive Scan
+-------------------------------------------------
+
+$ nmap -A 127.0.0.1
+
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 9.6p1 Ubuntu
+80/tcp   open  http    Apache httpd 2.4.58
+631/tcp  open  ipp     CUPS 2.4
+
+Service Info: OS: Linux
+OS details: Linux 5.x
+
+-------------------------------------------------
+7️⃣ Service & OS Detection
+-------------------------------------------------
+
+$ nmap -sV 127.0.0.1
+
+22/tcp  open  ssh     OpenSSH 9.6p1 Ubuntu
+80/tcp  open  http    Apache httpd 2.4.58
+631/tcp open  ipp     CUPS 2.4
+
+$ sudo nmap -O 127.0.0.1
+
+OS details: Linux 5.15 - 6.2
+Network Distance: 0 hops
+
+-------------------------------------------------
+8️⃣ NSE Script Results
+-------------------------------------------------
+
+$ nmap -sC 127.0.0.1
+
+PORT   STATE SERVICE
+22/tcp open  ssh
+| ssh-hostkey:
+|   256 SHA256:xxxxxxxx
+80/tcp open  http
+| http-title: Apache2 Ubuntu Default Page
+
+$ nmap --script http-enum 127.0.0.1
+
+/icons/: Potentially interesting directory
+/server-status: Apache status page
+
+$ nmap --script vuln 127.0.0.1
+
+No active vulnerabilities detected.
+
+-------------------------------------------------
+9️⃣ Automated Scanner Output
+-------------------------------------------------
+
+$ ./nmap_scanner.sh 127.0.0.1
+
+=========================================
+ Automated Nmap Scanner v1.0
+=========================================
+
+Target: 127.0.0.1
+Output Directory: nmap_results_20260217_181245
+Timestamp: 20260217_181245
+
+[+] Starting Host Discovery...
+ [SUCCESS] Host discovery completed
+
+[+] Starting Quick Port Scan...
+ [SUCCESS] Quick scan completed
+
+[+] Starting Service Detection...
+ [SUCCESS] Service detection completed
+
+Advanced scans executed successfully.
+
+Summary report generated:
+nmap_results_20260217_181245/scan_summary_report.txt
+
+-------------------------------------------------
+🔟 Summary Report Content
+-------------------------------------------------
+
+=========================================
+ NMAP SCAN SUMMARY REPORT
+=========================================
+
+Target: 127.0.0.1
+Scan Date: Mon Feb 17 18:14:52 UTC 2026
+Scan Duration: 42 seconds
+
+OPEN PORTS DISCOVERED:
+22/tcp open ssh
+80/tcp open http
+631/tcp open ipp
+
+SERVICES DETECTED:
+22/tcp open ssh OpenSSH 9.6p1
+80/tcp open http Apache 2.4.58
+
+-------------------------------------------------
+1️⃣1️⃣ Advanced Multi-Target Scanner
+-------------------------------------------------
+
+$ ./advanced_nmap_scanner.sh -t 127.0.0.1 -p 22,80,443,3306 -o test_scan
+
+[+] Scanning target: 127.0.0.1
+[COMPLETED] Results saved to: test_scan/127.0.0.1/
+
+$ ./advanced_nmap_scanner.sh -f targets.txt -a -o multi_target_scan
+
+Scanning target: 127.0.0.1
+Running aggressive scan...
+[COMPLETED]
+
+Scanning target: localhost
+Running aggressive scan...
+[COMPLETED]
+
+-------------------------------------------------
+1️⃣2️⃣ Analysis Script Output
+-------------------------------------------------
+
+$ ./analyze_results.sh nmap_results_20260217_181245
+
+=========================================
+ NMAP RESULTS ANALYSIS
+=========================================
+
+Total open ports found: 9
+
+Services discovered:
+ssh
+http
+ipp
+
+Potential security concerns:
+
+Analysis complete.
+
+-------------------------------------------------
+FINAL STATUS
+-------------------------------------------------
+
+✔ Nmap installation verified
+✔ Host discovery performed
+✔ TCP & UDP scans completed
+✔ Service & OS detection successful
+✔ NSE scripts executed
+✔ Automation scripts created
+✔ Multi-target scanner executed
+✔ Results analyzed successfully
+✔ Lab completed successfully
+
+=========================================
+END OF LAB 09 OUTPUT
+=========================================
