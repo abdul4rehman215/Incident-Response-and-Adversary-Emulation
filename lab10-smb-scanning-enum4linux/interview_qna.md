@@ -1,5 +1,4 @@
-# 🎤 Interview Questions & Answers  
-## Lab 10 – SMB Scanning with Enum4Linux
+# 🎤 Interview Questions & Answers - Lab 10: SMB Scanning with Enum4Linux
 
 ---
 
