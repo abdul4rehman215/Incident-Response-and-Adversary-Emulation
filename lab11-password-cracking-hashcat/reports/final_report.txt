@@ -1,0 +1,41 @@
+=== Password Cracking Analysis Report ===
+Generated on: Tue Feb 17 14:22:11 UTC 2026
+Analyst: toor
+
+## Hash Analysis Summary
+
+### MD5 Hashes Analyzed:
+4 md5_hashes.txt
+
+Cracked:
+4 md5_cracked.txt
+Success Rate: 100.00%
+
+### SHA-256 Hashes Analyzed:
+4 sha256_hashes.txt
+
+Cracked:
+4 sha256_cracked.txt
+Success Rate: 100.00%
+
+## Cracked Passwords Analysis
+
+### MD5 Cracked Passwords:
+      1 password123
+      1 admin2023
+      1 welcome
+      1 qwerty
+
+### SHA-256 Cracked Passwords:
+      1 password123
+      1 admin2023
+      1 welcome
+      1 qwerty
+
+## Security Recommendations
+1. Avoid common passwords found in wordlists
+2. Use complex passwords with mixed character sets
+3. Implement proper password policies
+4. Consider using stronger hashing algorithms
+5. Implement salt for password hashing
+✔ All hashes cracked successfully in this controlled lab environment.
