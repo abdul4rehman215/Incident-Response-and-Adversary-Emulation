@@ -1,0 +1,19 @@
+ADVANCED ROOTKIT DETECTION
+==========================
+Memory Dump: memory-dump.lime
+
+Process Count PSList: 128
+Process Count PSTree: 128
+
+Suspicious Kernel Modules:
+lime
+
+Suspicious Network Connections:
+0.0.0.0:8080
+0.0.0.0:9999
+
+Deleted or Hidden File Handles:
+
+Rootkit detection complete.
+✔ No hidden processes
+✔ No advanced rootkit artifacts detected
