@@ -1,0 +1,29 @@
+=== Performance Metrics Collection ===
+
+Testing different attack modes on MD5:
+
+1. Dictionary Attack Performance:
+real    0m0.12s
+user    0m0.09s
+sys     0m0.01s
+
+2. Brute Force Attack Performance (4 chars):
+real    0m0.34s
+user    0m0.29s
+sys     0m0.02s
+
+3. Rule-based Attack Performance:
+real    0m0.15s
+user    0m0.11s
+sys     0m0.01s
+
+Hardware utilization during cracking:
+GPU Temperature and Usage:
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 470.239       Driver Version: 470.239       CUDA Version: 12.2 |
+| GPU  Name        Temp   Utilization  Memory-Usage                         |
+|  0   Tesla T4    63C        87%      1024MiB / 15109MiB                   |
++-----------------------------------------------------------------------------+
+
+System load:
+ 14:24:41 up 2:11,  1 user,  load average: 0.42, 0.38, 0.29
