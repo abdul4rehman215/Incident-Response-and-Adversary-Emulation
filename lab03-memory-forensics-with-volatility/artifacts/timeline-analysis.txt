@@ -1,0 +1,22 @@
+=== PROCESS TIMELINE ANALYSIS ===
+Processes sorted by start time
+Parent-child relationships
+Network listeners correlation
+Suspicious activity reconstruction
+
+PID   PPID   COMM
+1     0      systemd
+1200  1      sshd
+1452  1200   bash
+3124  1452   python3
+3131  1452   nc
+3148  1452   python3
+
+=== PROCESS TREE ===
+systemd(1)
+ ├─sshd(1200)
+ ├─bash(1452)
+ │   ├─python3(3124)
+ │   ├─nc(3131)
+ │   └─python3(3148)
+Timeline reconstruction completed.
