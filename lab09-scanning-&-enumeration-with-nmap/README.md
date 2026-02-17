@@ -62,6 +62,10 @@ lab09-nmap-scanning/
 ├── interview_qna.md
 ├── troubleshooting.md
 │
+├── reports/
+│   ├── scan_summary_report.txt
+│   ├── nmap_results_20260217_181245.txt
+│
 └── scripts/
     ├── nmap_scanner.sh
     ├── advanced_nmap_scanner.sh
