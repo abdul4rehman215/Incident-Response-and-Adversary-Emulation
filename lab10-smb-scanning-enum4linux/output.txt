@@ -1,0 +1,297 @@
+=========================================
+LAB 10: SMB SCANNING WITH ENUM4LINUX
+Execution Outputs
+=========================================
+
+
+---------------------------------------------------------
+1️⃣ Verify Enum4Linux Installation
+---------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ enum4linux --help
+
+Enum4linux v0.9.1
+
+Usage: enum4linux [options] target
+
+Options:
+ -U        Enumerate users
+ -G        Enumerate groups
+ -S        Enumerate shares
+ -P        Get password policy information
+ -r        RID cycling
+ -o        OS information
+ -a        Do all simple enumeration (-U -S -G -P -r -o)
+
+
+---------------------------------------------------------
+2️⃣ Install & Configure Samba
+---------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ sudo apt update
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Reading package lists... Done
+
+toor@ip-172-31-10-241:~$ sudo apt install samba samba-common-bin -y
+samba is already the newest version (4.19.5)
+
+Create Share Directory:
+sudo mkdir -p /srv/samba/testshare
+sudo chmod 755 /srv/samba/testshare
+
+Verify:
+ls -ld /srv/samba/testshare
+drwxr-xr-x 2 root root 4096 Feb 17 19:02 /srv/samba/testshare
+
+
+---------------------------------------------------------
+3️⃣ Create Test Users
+---------------------------------------------------------
+
+sudo useradd -m testuser1
+sudo useradd -m testuser2
+
+echo "testuser1:password123" | sudo chpasswd
+echo "testuser2:password456" | sudo chpasswd
+
+Add to Samba:
+
+echo -e "password123\npassword123" | sudo smbpasswd -a testuser1
+Added user testuser1.
+
+echo -e "password456\npassword456" | sudo smbpasswd -a testuser2
+Added user testuser2.
+
+
+---------------------------------------------------------
+4️⃣ Validate Samba Configuration
+---------------------------------------------------------
+
+sudo testparm
+Loaded services file OK.
+Server role: ROLE_STANDALONE
+
+sudo systemctl restart smbd
+sudo systemctl enable smbd
+
+sudo systemctl status smbd
+
+● smbd.service - Samba SMB Daemon
+   Active: active (running)
+
+
+---------------------------------------------------------
+5️⃣ Full Enumeration
+---------------------------------------------------------
+
+toor@ip-172-31-10-241:~$ enum4linux -a 127.0.0.1
+
+Target Information:
+ OS: Unix (Samba 4.19.5)
+ Workgroup: WORKGROUP
+
+Enumerating Shares:
+ Sharename       Type      Comment
+ ---------       ----      -------
+ testshare       Disk
+ IPC$            IPC       IPC Service
+
+Enumerating Users:
+ user:[testuser1] rid:[1001]
+ user:[testuser2] rid:[1002]
+
+Enumerating Groups:
+ group:[users] rid:[100]
+ group:[administrators] rid:[101]
+
+Password Policy:
+ Minimum password length: 6
+ Password complexity: Disabled
+ Lockout threshold: None
+
+
+---------------------------------------------------------
+6️⃣ Targeted Enumeration
+---------------------------------------------------------
+
+enum4linux -U 127.0.0.1
+user:[testuser1]
+user:[testuser2]
+
+enum4linux -r 127.0.0.1
+S-1-5-21-123456789-1001 testuser1
+S-1-5-21-123456789-1002 testuser2
+
+enum4linux -G 127.0.0.1
+group:[users]
+group:[administrators]
+
+enum4linux -S 127.0.0.1
+Sharename       Type      Comment
+-----------------------------------
+testshare       Disk
+IPC$            IPC
+
+
+---------------------------------------------------------
+7️⃣ Run Comprehensive Bash Script
+---------------------------------------------------------
+
+./SMB_enum_comprehensive.sh 127.0.0.1
+
+[+] Starting comprehensive SMB enumeration of 127.0.0.1
+[+] Results will be saved in smb_enum_20260217_191530
+
+[+] Running basic enumeration...
+[+] Extracting user information...
+[+] Extracting group information...
+[+] Extracting share information...
+[+] Extracting password policy...
+[+] Extracting OS information...
+
+[+] Enumeration complete. Check smb_enum_20260217_191530 for results.
+
+
+Verify Output Directory:
+
+ls smb_enum_20260217_191530
+
+basic_enum.txt
+users.txt
+groups.txt
+shares.txt
+password_policy.txt
+os_info.txt
+
+
+---------------------------------------------------------
+8️⃣ Run SMB Results Analyzer
+---------------------------------------------------------
+
+python3 analyze_smb_results.py smb_enum_20260217_191530
+
+============================================================
+SMB ENUMERATION ANALYSIS REPORT
+============================================================
+Analysis Date: 2026-02-17 19:18:04
+Results Directory: smb_enum_20260217_191530
+
+DISCOVERED USERS:
+--------------------
+ • testuser1
+ • testuser2
+
+DISCOVERED SHARES:
+--------------------
+ • testshare
+ • IPC$
+
+SECURITY RECOMMENDATIONS:
+------------------------------
+ • Review user accounts for unnecessary access
+ • Implement strong password policies
+ • Consider disabling unused accounts
+ • Review share permissions
+ • Remove unnecessary shares
+ • Implement access controls
+ • Disable SMB v1 if still enabled
+ • Monitor SMB access logs regularly
+
+
+---------------------------------------------------------
+9️⃣ Run SMB Network Scanner
+---------------------------------------------------------
+
+python3 smb_network_scanner.py 127.0.0.1
+
+[+] Parsed 1 targets
+[+] Starting SMB enumeration scan of 1 targets
+[+] Using 10 threads
+[+] Scanning 127.0.0.1...
+[+] SMB port open on 127.0.0.1, running enumeration...
+[+] Enumeration completed for 127.0.0.1
+[+] Report saved to smb_scan_report.txt
+[+] Scan completed!
+
+
+View Report:
+
+cat smb_scan_report.txt
+
+SMB ENUMERATION SCAN REPORT
+==================================================
+Scan Date: 2026-02-17 19:23:41
+Total Targets: 1
+Successful Scans: 1
+Failed Scans: 0
+
+SUCCESSFUL SCANS:
+--------------------
+Target: 127.0.0.1
+Output File: smb_scan_127.0.0.1_1708194221/enum4linux_output.txt
+
+
+---------------------------------------------------------
+🔟 Run Advanced SMB Analyzer
+---------------------------------------------------------
+
+python3 advanced_smb_analyzer.py 127.0.0.1
+
+[+] Starting advanced SMB analysis of 127.0.0.1
+[+] Detailed report saved to detailed_smb_report.json
+[+] Summary report saved to smb_summary_report.txt
+[+] Analysis completed for 127.0.0.1
+[+] Found 2 users and 1 shares
+
+
+View Summary Report:
+
+cat smb_summary_report.txt
+
+SMB ENUMERATION SUMMARY REPORT
+==================================================
+Generated: 2026-02-17 19:28:11
+Targets Analyzed: 1
+
+TARGET: 127.0.0.1
+------------------------------
+OS Information:
+ Os: Unix (Samba 4.19.5)
+ Workgroup: WORKGROUP
+
+Users Found (2):
+ • testuser1
+ • testuser2
+
+Shares Found (1):
+ • testshare (Disk) -
+
+Security Risks:
+ [HIGH] Weak Usernames
+ Description: Found common weak usernames: testuser1
+ Recommendation: Rename or disable accounts with predictable names
+
+==================================================
+
+
+---------------------------------------------------------
+🔎 Verification Tests
+---------------------------------------------------------
+
+enum4linux --help | head -5
+Enum4linux v0.9.1
+Usage: enum4linux [options] target
+
+python3 -c "import subprocess, threading, json; print('All modules available')"
+All modules available
+
+sudo systemctl status smbd
+Active: active (running)
+
+enum4linux -U 127.0.0.1 | grep -i user
+user:[testuser1]
+user:[testuser2]
+
+=========================================================
+END OF LAB 10 OUTPUT
+=========================================================
