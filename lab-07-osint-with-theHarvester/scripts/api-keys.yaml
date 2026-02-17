@@ -1,0 +1,5 @@
+apikeys:
+shodan: your_shodan_api_key_here
+virustotal: your_virustotal_api_key_here
+hunter: your_hunter_api_key_here
+# Note: Replace placeholder API keys with actual keys from respective services for enhanced functionality.
