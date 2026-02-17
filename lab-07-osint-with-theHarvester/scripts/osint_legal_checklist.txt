@@ -1,0 +1,20 @@
+OSINT Legal Compliance Checklist
+
+Before conducting OSINT activities:
+
+□ Ensure you have proper authorization
+□ Only target domains you own or have permission to test
+□ Respect robots.txt and terms of service
+□ Do not exceed reasonable request rates
+□ Document your activities for compliance
+□ Avoid accessing private or restricted information
+□ Follow organizational security policies
+□ Consider data protection regulations (GDPR, etc.)
+
+Safe Practice Domains for Testing:
+• example.com (IANA reserved)
+• test.com (if owned by your organization)
+• Your own registered domains
+
+Remember:
+OSINT should only collect publicly available information.
