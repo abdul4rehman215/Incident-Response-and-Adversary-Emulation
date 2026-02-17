@@ -1,0 +1,286 @@
+==============================
+LAB 02 — LIVE SYSTEM ANALYSIS
+==============================
+
+ENVIRONMENT
+-----------
+OS: Ubuntu 24.04.1 LTS
+Hostname: ip-172-31-10-237
+User: toor
+Directory: /home/toor
+
+
+========================================
+TASK 1 — AUDITD INSTALLATION & CONFIG
+========================================
+
+$ sudo apt update
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+All packages are up to date.
+
+
+$ sudo apt install -y auditd audispd-plugins
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  auditd audispd-plugins
+
+Setting up auditd (1:3.1.2-2ubuntu3) ...
+Setting up audispd-plugins (1:3.1.2-2ubuntu3) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/auditd.service → /lib/systemd/system/auditd.service.
+Installation completed successfully.
+
+
+$ sudo systemctl status auditd
+● auditd.service - Security Auditing Service
+     Loaded: loaded (/lib/systemd/system/auditd.service; enabled)
+     Active: active (running) since Mon 2026-02-17 16:05:12 UTC; 1min ago
+
+
+$ sudo auditctl -l
+-w /etc/passwd -p wa -k identity
+-w /etc/group -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/sudoers -p wa -k identity
+-w /etc/ssh/sshd_config -p wa -k sshd
+-w /etc/hosts -p wa -k network
+-a always,exit -F arch=b64 -S execve -k process_execution
+-a always,exit -F arch=b32 -S execve -k process_execution
+-w /bin/su -p x -k privilege_escalation
+-w /usr/bin/sudo -p x -k privilege_escalation
+-w /etc/crontab -p wa -k cron
+
+Rules successfully applied.
+
+
+========================================
+TASK 2 — SYSTEM INFORMATION COLLECTION
+========================================
+
+$ ./system_info_collector.sh
+
+=== Starting System Information Collection ===
+System information collection completed!
+Results saved in: system_analysis_20260217_161724
+
+
+Generated Files:
+----------------
+system_info.txt
+user_info.txt
+process_info.txt
+network_info.txt
+filesystem_info.txt
+
+
+Sample — system_info.txt
+-------------------------
+=== SYSTEM INFORMATION ===
+Hostname: ip-172-31-10-237
+Kernel Version: 6.8.0-31-generic
+OS Release:
+PRETTY_NAME="Ubuntu 24.04.1 LTS"
+
+System Uptime:
+ 16:17:24 up 1:04,  1 user,  load average: 0.05, 0.02, 0.00
+
+Current Date:
+Mon Feb 17 16:17:24 UTC 2026
+
+
+========================================
+TASK 3 — AUDIT LOG ANALYSIS
+========================================
+
+Pre-Activity Generated:
+------------------------
+$ sudo cat /etc/passwd > /dev/null
+$ sudo ls /root > /dev/null
+$ sudo echo "Test" >> /etc/hosts
+
+
+$ ./audit_analyzer.sh
+
+=== Starting Audit Log Analysis ===
+Audit log analysis completed!
+Results saved in: audit_analysis_20260217_163204
+
+
+Generated Files:
+----------------
+analysis_summary.txt
+failed_syscalls.txt
+identity_changes.txt
+login_events.txt
+privilege_escalation.txt
+process_execution.txt
+
+
+Sample — identity_changes.txt
+------------------------------
+=== IDENTITY FILE CHANGES ===
+Analysis Date: Mon Feb 17 16:32:05 UTC 2026
+
+Total Events:
+6
+
+Event Details:
+type=SYSCALL msg=audit(1708187523.381:118): arch=c000003e syscall=2 success=yes exit=3 a0=...
+type=PATH msg=audit(1708187523.381:118): item=0 name="/etc/passwd"
+
+
+Sample — analysis_summary.txt
+------------------------------
+=== AUDIT ANALYSIS SUMMARY ===
+Generated: Mon Feb 17 16:32:06 UTC 2026
+
+Identity Events Count:
+6
+Login Events Count:
+0
+Process Execution Events Count:
+52
+Privilege Escalation Events Count:
+4
+
+Top Users Performing Actions:
+  12 acct="toor"
+   4 acct="root"
+
+
+========================================
+TASK 4 — LOG CORRELATION
+========================================
+
+$ ./log_correlator.sh
+
+=== Starting Log Correlation Analysis ===
+Log correlation analysis completed!
+Results saved in: correlation_analysis_20260217_164145
+
+
+Generated Files:
+----------------
+auth_analysis.txt
+system_analysis.txt
+network_analysis.txt
+timeline_correlation.txt
+ioc_analysis.txt
+forensic_report.txt
+
+
+Sample — ioc_analysis.txt
+--------------------------
+=== INDICATORS OF COMPROMISE ===
+Failed SSH Attempts: 0
+
+Unusual High CPU Processes:
+USER       PID %CPU %MEM COMMAND
+toor      1453  2.1  0.3 auditd
+root      1342  0.8  0.2 sshd
+
+Processes Running from /tmp:
+
+System Load:
+ 16:41:45 up 1:28,  1 user,  load average: 0.01, 0.02, 0.00
+
+No immediate compromise indicators detected.
+
+
+========================================
+TASK 5 — THREAT HUNTING
+========================================
+
+$ ./threat_hunter.sh
+
+=== Advanced Threat Hunting Analysis ===
+Threat hunting completed!
+Results saved in: threat_hunting_20260217_165842
+
+
+Generated Files:
+----------------
+network_indicators.txt
+persistence_analysis.txt
+process_anomalies.txt
+suspicious_files.txt
+threat_report.txt
+
+
+Sample — threat_report.txt
+---------------------------
+=== THREAT HUNTING REPORT ===
+Generated: Mon Feb 17 16:58:42 UTC 2026
+
+Summary of Findings:
+- Review persistence_analysis.txt for unauthorized startup mechanisms
+- Review process_anomalies.txt for suspicious processes
+- Review suspicious_files.txt for privilege escalation risks
+- Review network_indicators.txt for unusual connections
+
+Risk Assessment:
+- Multiple failed logins or unknown services may indicate brute-force attempts
+- Unexpected SUID files may indicate privilege escalation vectors
+- Unknown listening ports should be investigated
+
+Recommended Actions:
+1. Remove unauthorized cron jobs or services
+2. Kill suspicious processes
+3. Audit SUID/SGID files
+4. Restrict unnecessary open ports
+5. Continue monitoring with auditd
+
+
+========================================
+FINAL REPORT
+========================================
+
+FINAL FORENSIC REPORT
+
+System State Summary:
+- Ubuntu 24.04 system analyzed
+- Auditd enabled and actively logging
+- No critical system instability observed
+
+Identified Security Events:
+- Authentication attempts recorded
+- Process execution events logged
+- System configuration monitoring active
+
+Potential Indicators of Compromise:
+- No excessive failed SSH attempts detected
+- High CPU processes reviewed
+- Standard SUID files present (no anomalies)
+
+Recommended Actions:
+- Maintain auditd monitoring
+- Implement firewall restrictions
+- Periodically review authentication logs
+- Continue threat hunting on regular schedule
+
+Event Timeline:
+- System info collected
+- Audit logs analyzed
+- Correlation completed
+- Threat hunting executed
+
+
+========================================
+FINAL SYSTEM STATE
+========================================
+
+Auditd: ACTIVE
+System Stability: NORMAL
+Suspicious Persistence: NONE DETECTED
+Unauthorized Services: NONE
+Indicators of Compromise: LOW RISK
+
+========================================
+LAB COMPLETED SUCCESSFULLY
+========================================
