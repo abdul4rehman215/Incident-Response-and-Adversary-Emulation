@@ -380,8 +380,6 @@ lab07-osint-with-theharvester/
 
 ---
 
----
-
 # 🏁 Conclusion
 
 In this comprehensive OSINT lab:
