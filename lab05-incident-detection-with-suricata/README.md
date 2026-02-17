@@ -159,12 +159,9 @@ The structure mirrors real enterprise IDS deployments.
     │   ├── rule_performance.sh
     │   ├── advanced_parser.py
     │   └── alert_dashboard.sh
-    ├── outputs/
-    │   ├── fast.log_sample.txt
-    │   ├── eve_alert_sample.json
-    │   ├── analyzer_output.txt
-    │   ├── rule_performance_output.txt
-    │   └── incident_summary_sample.txt
+    ├── outputs
+    ├── reports/
+    │   └── incident_summary.txt
     ├── interview_qna.md
     └── troubleshooting.md
 ```
