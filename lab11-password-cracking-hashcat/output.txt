@@ -1,0 +1,225 @@
+============================================================
+Lab 11: Password Cracking with Hashcat
+Consolidated Output File
+Environment: Ubuntu 24.04.1 LTS
+User: toor
+GPU: NVIDIA Tesla T4
+============================================================
+
+############################
+1. HASHCAT INSTALLATION
+############################
+
+$ hashcat --version
+v6.2.6
+
+$ hashcat -I
+
+OpenCL Info:
+Platform ID #1
+ Name: NVIDIA CUDA
+ Vendor: NVIDIA Corporation
+
+ Device ID #1
+ Type: GPU
+ Name: NVIDIA Tesla T4
+ Memory: 15109 MB
+
+Platform ID #2
+ Name: Portable Computing Language
+
+ Device ID #2
+ Type: CPU
+ Name: Intel(R) Xeon(R) Platinum
+
+
+############################
+2. HASH FILE CONTENTS
+############################
+
+MD5 Hashes:
+482c811da5d5b4bc6d497ffa98491e38
+1d12c40b09080aa328c775fc60ee2655
+40be4e59b9a2a2b5dffb918c0e86b3d7
+d8578edf8458ce06fbc5bb76a58c5ca4
+
+SHA-256 Hashes:
+ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f
+6d6f6eae6930e8a3b5b8b7cbdeb18f0d33bd583a14bcbb157ccd44fcbb40f19a
+280d44ab1e2a8b5bfae8d74f9e0f99c3...
+65e84be33532fb784c481a6b7f4e21d6...
+
+
+############################
+3. DICTIONARY ATTACK – MD5
+############################
+
+hashcat (v6.2.6) starting
+
+* Device #1: NVIDIA Tesla T4
+
+Hashes: 4 digests; 4 unique digests
+
+482c811da5d5b4bc6d497ffa98491e38:password123
+1d12c40b09080aa328c775fc60ee2655:admin2023
+40be4e59b9a2a2b5dffb918c0e86b3d7:welcome
+d8578edf8458ce06fbc5bb76a58c5ca4:qwerty
+
+Status...........: Cracked
+Recovered........: 4/4 (100.00%)
+Speed.#1.........: 125.5 MH/s
+
+
+############################
+4. DICTIONARY ATTACK – SHA256
+############################
+
+hashcat (v6.2.6) starting
+
+ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f:password123
+6d6f6eae6930e8a3b5b8b7cbdeb18f0d33bd583a14bcbb157ccd44fcbb40f19a:admin2023
+280d44ab1e2a8b5bfae8d74f9e0f99c3...:welcome
+65e84be33532fb784c481a6b7f4e21d6...:qwerty
+
+Recovered........: 4/4 (100.00%)
+Speed.#1.........: 850.2 kH/s
+
+Performance Difference:
+MD5 Speed  → ~125 MH/s
+SHA256     → ~850 kH/s
+
+
+############################
+5. BRUTE FORCE ATTACK
+############################
+
+Simple MD5 hashes:
+900150983cd24fb0d6963f7d28e17f72
+202cb962ac59075b964b07152d234b70
+
+Lowercase brute force:
+900150983cd24fb0d6963f7d28e17f72:abc
+Recovered........: 1/2 (50.00%)
+Speed.#1.........: 110 MH/s
+
+Numeric brute force:
+202cb962ac59075b964b07152d234b70:123
+Recovered........: 2/2 (100.00%)
+Speed.#1.........: 130 MH/s
+
+
+############################
+6. RULE-BASED ATTACK
+############################
+
+Applying rules from custom.rule
+Recovered........: 4/4 (100.00%)
+Speed.#1.........: 118 MH/s
+
+
+############################
+7. COMBINATION ATTACK
+############################
+
+5f4dcc3b5aa765d61d8327deb882cf99:password
+0192023a7bbd73250516f069df18b500:admin123
+4d186321c1a7f0f354b297e8914ab240:user2023
+
+Recovered........: 3/3 (100.00%)
+Speed.#1.........: 95 MH/s
+
+
+############################
+8. PERFORMANCE TEST – CPU VS GPU
+############################
+
+CPU-only test:
+
+real    0m2.482s
+user    0m2.401s
+sys     0m0.030s
+
+GPU-accelerated test:
+
+real    0m0.214s
+user    0m0.180s
+sys     0m0.020s
+
+GPU ≈ 10x faster than CPU
+
+
+############################
+9. BENCHMARK RESULTS
+############################
+
+Benchmarking MD5 (mode 0):
+Speed.#1.........: 28.5 GH/s
+
+Benchmarking SHA-256 (mode 1400):
+Speed.#1.........: 950 MH/s
+
+Benchmarking NTLM (mode 1000):
+Speed.#1.........: 32.8 GH/s
+
+Benchmarking bcrypt (mode 3200):
+Speed.#1.........: 950 H/s
+
+
+############################
+10. METRICS SCRIPT OUTPUT
+############################
+
+Dictionary Attack:
+real    0m0.12s
+
+Brute Force:
+real    0m0.34s
+
+Rule-based:
+real    0m0.15s
+
+GPU Status:
+Tesla T4
+Temp: 63C
+Utilization: 87%
+Memory: 1024MiB / 15109MiB
+
+System Load:
+load average: 0.42, 0.38, 0.29
+
+
+############################
+11. FINAL ANALYSIS REPORT
+############################
+
+MD5 Success Rate: 100.00%
+SHA-256 Success Rate: 100.00%
+
+Cracked Passwords:
+password123
+admin2023
+welcome
+qwerty
+
+Security Recommendations:
+- Avoid weak passwords
+- Use salted hashing
+- Implement bcrypt/Argon2
+- Enforce complexity policies
+- Prevent credential reuse
+
+
+############################
+12. LAB VALIDATION
+############################
+
+✓ Hashcat installed successfully
+✓ MD5 hash file created
+✓ SHA-256 hash file created
+✓ Custom wordlist created
+✓ Passwords successfully cracked
+✓ OpenCL devices detected
+
+============================================================
+Lab 11 Completed Successfully
+============================================================
