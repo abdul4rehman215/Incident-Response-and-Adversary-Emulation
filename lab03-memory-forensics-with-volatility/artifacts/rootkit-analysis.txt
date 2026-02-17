@@ -1,0 +1,21 @@
+=== ROOTKIT DETECTION ANALYSIS ===
+Memory Dump: memory-dump.lime
+Date: Mon Feb 17 18:22:41 UTC 2026
+
+1. Process Count Comparison:
+PSList Count: 128
+PSTree Count: 128
+
+2. Suspicious Kernel Modules:
+lime
+
+3. Suspicious Network Connections:
+tcp 0.0.0.0:8080 LISTEN 3124 python3
+tcp 0.0.0.0:9999 LISTEN 3131 nc
+
+4. Hidden/Deleted File Handles:
+
+=== ROOTKIT CHECK COMPLETE ===
+✔ No hidden processes
+✔ No malicious kernel modules
+✔ Suspicious network services identified (lab-created)
