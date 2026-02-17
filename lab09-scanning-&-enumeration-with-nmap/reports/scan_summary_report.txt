@@ -1,0 +1,27 @@
+=========================================
+ NMAP SCAN SUMMARY REPORT
+=========================================
+
+Target: 127.0.0.1
+Scan Date: Mon Feb 17 18:14:52 UTC 2026
+Scan Duration: 42 seconds
+
+OPEN PORTS DISCOVERED:
+=====================
+22/tcp open ssh
+80/tcp open http
+631/tcp open ipp
+
+SERVICES DETECTED:
+=================
+22/tcp open ssh OpenSSH 9.6p1
+80/tcp open http Apache 2.4.58
+
+GENERATED FILES:
+===============
+host_discovery.txt
+quick_scan.txt
+service_detection.txt
+os_detection.txt
+vulnerability_scan.txt
+aggressive_scan.txt
