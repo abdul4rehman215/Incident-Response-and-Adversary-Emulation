@@ -1,0 +1,14 @@
+Incident Response Summary
+Generated: Mon Feb 17 11:08:22 UTC 2026
+
+Total Alerts: 18
+High Severity Alerts: 6
+Unique Source IPs: 1
+
+Top 5 Alert Types:
+  7 ICMP Ping Detected
+  4 Suspicious HTTP Request
+  3 Suspicious DNS Query
+  2 Potential SSH Brute Force
+  2 ET SCAN Nmap Scripting Engine User-Agent Detected
+✔ Incident evidence successfully collected.
