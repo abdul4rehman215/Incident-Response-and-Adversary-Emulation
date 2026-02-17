@@ -1,0 +1,59 @@
+# ==============================================================
+# LAB 05 — Advanced Custom Detection Rules
+# Author: Lab Student
+# Purpose: Advanced threat detection scenarios
+# ==============================================================
+
+# --------------------------------------------------------------
+# 1. Advanced SSH Brute Force Detection
+# 10 attempts within 5 minutes
+# --------------------------------------------------------------
+alert tcp any any -> $HOME_NET 22 \
+(msg:"SSH Brute Force Attack Detected"; \
+flow:to_server,established; \
+content:"SSH"; \
+threshold:type both, track by_src, count 10, seconds 300; \
+sid:2000001; rev:1;)
+
+# --------------------------------------------------------------
+# 2. Suspicious User-Agent Detection (Bot Activity)
+# --------------------------------------------------------------
+alert http any any -> any any \
+(msg:"Suspicious User Agent Detected"; \
+http_user_agent; content:"bot"; nocase; \
+sid:2000002; rev:1;)
+
+# --------------------------------------------------------------
+# 3. Potential Data Exfiltration
+# Large outbound data bursts
+# --------------------------------------------------------------
+alert tcp $HOME_NET any -> !$HOME_NET any \
+(msg:"Potential Data Exfiltration"; \
+dsize:>10000; \
+threshold:type both, track by_src, count 5, seconds 60; \
+sid:2000003; rev:1;)
+
+# --------------------------------------------------------------
+# 4. DNS over HTTPS Detection (Cloudflare DoH)
+# --------------------------------------------------------------
+alert tls any any -> any 443 \
+(msg:"DNS over HTTPS Detected"; \
+tls_sni; content:"cloudflare-dns.com"; \
+sid:2000004; rev:1;)
+
+# --------------------------------------------------------------
+# 5. Cryptocurrency Mining Traffic Detection
+# --------------------------------------------------------------
+alert tcp any any -> any any \
+(msg:"Cryptocurrency Mining Detected"; \
+content:"stratum+tcp"; \
+sid:2000005; rev:1;)
+
+# --------------------------------------------------------------
+# 6. HTTP File Upload Detection (Multipart POST)
+# --------------------------------------------------------------
+alert http any any -> any any \
+(msg:"File Upload Detected"; \
+http_method; content:"POST"; \
+http_header; content:"multipart/form-data"; \
+sid:2000006; rev:1;)
