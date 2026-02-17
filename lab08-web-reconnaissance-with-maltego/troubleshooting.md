@@ -1,6 +1,6 @@
 # 🛠 Troubleshooting Guide – Lab 08: Web Reconnaissance with Maltego
 
-This document outlines common issues encountered during installation, integration, and execution of Maltego and supporting OSINT tools, along with practical solutions.
+> This document outlines common issues encountered during installation, integration, and execution of Maltego and supporting OSINT tools, along with practical solutions.
 
 ---
 
