@@ -1,4 +1,4 @@
-# 🎤 Interview Questions & Answers - Lab 12 – Brute-Force and Credential Stuffing Attacks
+# 🎤 Interview Q&A - Lab 12 – Brute-Force and Credential Stuffing Attacks
 
 ---
 
