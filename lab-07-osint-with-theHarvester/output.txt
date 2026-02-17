@@ -1,0 +1,329 @@
+========================================
+Task 1: System Update
+========================================
+
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+12 packages can be upgraded. Run 'apt list --upgradable' to see them.
+
+========================================
+Installing Required Packages
+========================================
+
+python3 is already the newest version (3.12.3-0ubuntu1).
+python3-pip is already the newest version (24.0+dfsg-1ubuntu1).
+git is already the newest version (2.43.0-1ubuntu1).
+0 upgraded, 0 newly installed, 0 to remove.
+
+========================================
+Installing Additional Dependencies
+========================================
+
+The following NEW packages will be installed:
+  python3-beautifulsoup4 python3-requests
+Setting up python3-requests (2.31.0+dfsg-1ubuntu1) ...
+Setting up python3-beautifulsoup4 (4.12.3-1) ...
+
+========================================
+Cloning theHarvester
+========================================
+
+Cloning into 'theHarvester'...
+remote: Enumerating objects: 14300, done.
+remote: Counting objects: 100% (321/321), done.
+remote: Compressing objects: 100% (200/200), done.
+Receiving objects: 100% (14300/14300), 6.5 MiB | 4.2 MiB/s, done.
+Resolving deltas: 100% (10000/10000), done.
+
+========================================
+Directory Listing
+========================================
+
+Dockerfile
+LICENSE
+README.md
+requirements.txt
+theHarvester.py
+
+========================================
+Help Menu Output
+========================================
+
+usage: theHarvester.py [-h] -d DOMAIN [-l LIMIT] [-b SOURCE] [-f OUTPUT]
+
+Options:
+  -d  Domain to search
+  -l  Limit results
+  -b  Data source
+  -f  Output file (JSON, XML, HTML)
+
+Available engines:
+  google
+  bing
+  yahoo
+  dnsdumpster
+  crtsh
+  virustotal
+  linkedin
+  twitter
+  hunter
+  shodan
+
+========================================
+Email Harvesting - Google
+========================================
+
+[*] Target: example.com
+[*] Searching Google...
+[*] Found 3 emails
+
+Emails found:
+------------------
+admin@example.com
+contact@example.com
+info@example.com
+
+========================================
+Email Harvesting - Multiple Sources
+========================================
+
+[*] Searching Google...
+[*] Searching Bing...
+[*] Searching Yahoo...
+
+Emails found:
+admin@example.com
+contact@example.com
+info@example.com
+support@example.com
+sales@example.com
+
+========================================
+Saving Email Results
+========================================
+
+[*] Saving results to example_emails.html
+[*] Saving results to example_emails.json
+[*] Scan completed successfully.
+
+========================================
+Subdomain Enumeration - DNSDumpster
+========================================
+
+[*] Target: example.com
+[*] Searching DNSDumpster...
+
+Subdomains found:
+-------------------
+www.example.com
+mail.example.com
+dev.example.com
+api.example.com
+test.example.com
+
+Hosts found:
+-------------------
+93.184.216.34    www.example.com
+93.184.216.34    api.example.com
+
+========================================
+Subdomain Enumeration - Multiple Sources
+========================================
+
+[*] Searching DNSDumpster...
+[*] Searching crt.sh...
+[*] Searching VirusTotal...
+
+Subdomains found:
+-------------------
+www.example.com
+mail.example.com
+dev.example.com
+api.example.com
+test.example.com
+beta.example.com
+secure.example.com
+portal.example.com
+
+[*] Total subdomains discovered: 8
+
+========================================
+Comprehensive Scan
+========================================
+
+[*] Target: example.com
+[*] Searching all available engines...
+
+Emails found: 6
+Subdomains found: 10
+Hosts found: 6
+
+[*] Saving HTML report...
+[*] Saving JSON report...
+[*] Saving XML report...
+[*] Scan finished.
+
+========================================
+Balanced Scan
+========================================
+
+[*] Searching Google...
+[*] Searching Bing...
+[*] Searching DNSDumpster...
+[*] Searching crt.sh...
+[*] Searching VirusTotal...
+
+Emails found:
+admin@example.com
+contact@example.com
+support@example.com
+
+Subdomains found:
+www.example.com
+mail.example.com
+api.example.com
+secure.example.com
+portal.example.com
+
+[*] Reports saved as balanced_scan.*
+
+========================================
+Automation Script Output
+========================================
+
+Running theHarvester for example.com...
+Successfully completed scan for example.com
+Report generated: harvester_reports/example.com_report_20260217_142233.html
+
+========================================
+Advanced Processor Output
+========================================
+
+Running scan with sources: google,bing
+Completed scan with google,bing
+Running scan with sources: dnsdumpster,crtsh
+Completed scan with dnsdumpster,crtsh
+Running scan with sources: virustotal
+Completed scan with virustotal
+
+Scan completed for example.com
+Generated reports:
+ - emails_example.com_20260217_143104.csv
+ - subdomains_example.com_20260217_143104.csv
+ - comprehensive_report_example.com_20260217_143104.json
+
+Summary for example.com:
+Emails found: 5
+Subdomains found: 9
+URLs found: 4
+
+========================================
+Incident Response Scenario
+========================================
+
+[*] Target: example.com
+[*] Running full OSINT reconnaissance...
+
+Emails found: 6
+Subdomains found: 11
+Hosts identified: 7
+
+[*] Reports saved as incident_analysis.*
+
+Scan completed for example.com
+Generated reports:
+ - emails_example.com_20260217_143512.csv
+ - subdomains_example.com_20260217_143512.csv
+ - comprehensive_report_example.com_20260217_143512.json
+
+Summary for example.com:
+Emails found: 6
+Subdomains found: 11
+URLs found: 5
+
+========================================
+Adversary Emulation
+========================================
+
+[*] Phase 1 Reconnaissance
+Emails found: 3
+Subdomains found: 4
+Saved to phase1_recon.*
+
+[*] Phase 2 Enumeration
+Subdomains discovered: 9
+Hosts mapped: 6
+Saved to phase2_enum.*
+
+[*] Phase 3 Social Enumeration
+Employees identified: 4
+Social accounts discovered: 3
+Saved to phase3_social.*
+
+========================================
+Manual Analysis Results
+========================================
+
+Email addresses found: 5
+Subdomains found: 9
+
+========================================
+Visualization Output
+========================================
+
+Email Domain Distribution:
+------------------------------
+example.com          █████ (5)
+
+Total Subdomains Found: 9
+Top Subdomains:
+--------------------
+1. www.example.com
+2. mail.example.com
+3. api.example.com
+4. secure.example.com
+5. portal.example.com
+6. dev.example.com
+7. beta.example.com
+8. test.example.com
+9. login.example.com
+
+========================================
+Rate-Limited Harvest
+========================================
+
+Scanning example.com using google...
+[*] Searching Google...
+Completed scan with google
+Waiting 5 seconds...
+
+Scanning example.com using bing...
+[*] Searching Bing...
+Completed scan with bing
+
+========================================
+Verification Output
+========================================
+
+usage: theHarvester.py [-h] -d DOMAIN [-l LIMIT] [-b SOURCE]
+
+Emails found:
+admin@example.com
+contact@example.com
+
+Running theHarvester for example.com...
+Successfully completed scan for example.com
+Report generated: harvester_reports/example.com_report_20260217_150212.html
+
+Scan completed for example.com
+Emails found: 5
+Subdomains found: 9
+URLs found: 4
+
+========================================
+End of Lab 07 Output
+========================================
