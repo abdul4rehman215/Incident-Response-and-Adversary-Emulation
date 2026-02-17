@@ -1,4 +1,4 @@
-# 🛠 Lab 09: Troubleshooting Guide - Scanning & Enumeration with Nmap
+# 🛠 Troubleshooting Guide - Lab 09: Scanning & Enumeration with Nmap
 
 ---
 
