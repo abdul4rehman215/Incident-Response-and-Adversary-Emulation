@@ -1,0 +1,21 @@
+DIGITAL FORENSIC ANALYSIS REPORT
+================================
+
+Case Number: LAB-MF-20260217
+Analysis Date: Mon Feb 17 19:05:12 UTC 2026
+Analyst: Lab Student
+Evidence: memory-dump.lime
+
+EXECUTIVE SUMMARY
+=================
+This report documents the memory forensic analysis performed on a Linux memory dump.
+The investigation utilized Volatility 3 to analyze running processes, network
+connections, loaded modules, and file artifacts.
+
+KEY FINDINGS
+============
+- Suspicious Python process detected
+- Network listeners on ports 8080 and 9999 identified
+- Sensitive file access observed
+- No confirmed kernel rootkit detected
+Executive report successfully generated.
