@@ -1,0 +1,3 @@
+[80][http-get] host: 127.0.0.1   login: webuser   password: password
+[80][http-get] host: 127.0.0.1   login: admin   password: admin123
+
