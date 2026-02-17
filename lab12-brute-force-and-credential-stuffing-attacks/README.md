@@ -231,6 +231,38 @@ Defense successfully mitigated brute-force attempts.
 
 ---
 
+lab12-bruteforce-credential-stuffing/
+│
+├── README.md
+├── interview_qna.md
+├── troubleshooting.md
+│
+├── wordlists/
+│   ├── userlist.txt
+│   └── passlist.txt
+│
+├── scripts/
+│   ├── brute_force.sh
+│   ├── credential_stuffing.sh
+│   ├── analyze_results.sh
+│   └── test_rate_limit.sh
+│
+├── results/
+│   ├── ftp_results.txt
+│   ├── http_results.txt
+│   ├── ftp_success.log
+│   ├── http_success.log
+│
+├── defense/
+│   ├── jail.local
+│   └── fail2ban_status.txt
+│
+├── reports/
+│   └── security_report.md
+
+
+
+---
 ## 🧠 Real-World Relevance
 
 This lab simulates real-world attack scenarios:
