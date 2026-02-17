@@ -1,0 +1,20 @@
+{
+    "timestamp": "2026-02-17T11:58:33",
+    "total_queries": 78,
+    "unique_domains": 11,
+    "top_domains": {
+        "google.com": 10,
+        "github.com": 8,
+        "suspicious-domain.com": 62
+    },
+    "suspicious_activity": [
+        "DGA-like domain detected: xjskdfhskdjfhksd.com",
+        "Suspicious keyword domain: malware-control-server.tk"
+    ],
+    "recommendations": [
+        "Investigate suspicious domains immediately",
+        "Check endpoint systems for malware",
+        "Block malicious domains at firewall/DNS level"
+    ]
+}
+
