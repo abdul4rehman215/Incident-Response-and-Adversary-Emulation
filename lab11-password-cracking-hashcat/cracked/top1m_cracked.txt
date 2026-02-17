@@ -1,0 +1,9 @@
+=== Optimized Hashcat Cracking ===
+Hash file: md5_hashes.txt
+Wordlist: wordlists/top1m.txt
+Hash mode: 0
+
+Status...........: Cracked
+Recovered........: 4/4 (100.00%)
+Speed.#1.........:  29.2 GH/s
+✔ Optimized kernel increased performance slightly.
