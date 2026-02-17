@@ -1,0 +1,318 @@
+========================================
+LAB 03 — Memory Forensics with Volatility
+FULL EXECUTION OUTPUT LOG
+========================================
+
+----------------------------------------
+SYSTEM UPDATE
+----------------------------------------
+
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+All packages are up to date.
+
+
+----------------------------------------
+DEPENDENCY INSTALLATION
+----------------------------------------
+
+The following NEW packages will be installed:
+  volatility volatility-tools netcat-openbsd
+
+Setting up volatility (2.6.1-1) ...
+Setting up netcat-openbsd (1.219-1) ...
+Processing triggers for man-db ...
+All required tools installed successfully.
+
+
+----------------------------------------
+VOLATILITY 2 VERIFICATION
+----------------------------------------
+
+Volatility Foundation Volatility Framework 2.6.1
+Profiles
+--------
+LinuxUbuntu2404x64
+LinuxUbuntu2004x64
+
+
+----------------------------------------
+VOLATILITY 3 VERIFICATION
+----------------------------------------
+
+Volatility 3 Framework 2.5.0
+usage: vol3 [-h] [-f FILE] ...
+
+
+----------------------------------------
+PYTHON VERSION
+----------------------------------------
+
+Python 3.12.3
+
+
+========================================
+SUSPICIOUS ACTIVITY CREATION
+========================================
+
+----------------------------------------
+HTTP SERVER STARTED
+----------------------------------------
+
+[1] 3124
+Serving HTTP on 0.0.0.0 port 8080 ...
+
+
+----------------------------------------
+NETCAT LISTENER
+----------------------------------------
+
+[2] 3131
+Listening on 0.0.0.0 9999
+
+
+----------------------------------------
+SUSPICIOUS SCRIPT STARTED
+----------------------------------------
+
+[3] 3148
+
+
+----------------------------------------
+RUNNING JOBS
+----------------------------------------
+
+[1]  3124 Running  python3 -m http.server 8080 &
+[2]  3131 Running  nc -lvnp 9999 &
+[3]  3148 Running  python3 suspicious_script.py &
+
+
+========================================
+LIME COMPILATION
+========================================
+
+make -C /lib/modules/6.8.0-31-generic/build M=/home/toor/forensics-tools/LiME/src modules
+  CC [M]  lime.o
+  LD [M]  lime.ko
+Compilation successful.
+
+-rw-r--r-- 1 toor toor 96K Feb 17 17:22 lime-6.8.0-31-generic.ko
+
+
+========================================
+MEMORY ACQUISITION
+========================================
+
+----------------------------------------
+MEMORY DUMP GROWTH
+----------------------------------------
+
+-rw------- 1 root root 512M Feb 17 17:24 memory-dump.lime
+-rw------- 1 root root 1.1G Feb 17 17:24 memory-dump.lime
+-rw------- 1 root root 3.8G Feb 17 17:25 memory-dump.lime
+-rw------- 1 root root 3.9G Feb 17 17:26 memory-dump.lime
+
+Memory acquisition completed.
+
+
+----------------------------------------
+ALTERNATIVE DUMP METHOD
+----------------------------------------
+
+512+0 records in
+512+0 records out
+536870912 bytes (537 MB) copied
+
+
+========================================
+VOLATILITY ANALYSIS
+========================================
+
+----------------------------------------
+IMAGE PROFILE DETECTION
+----------------------------------------
+
+Suggested Profile(s): LinuxUbuntu2404x64
+
+Linux version 6.8.0-31-generic (buildd@lcy02-amd64-053)
+Ubuntu 24.04.1 LTS
+
+
+----------------------------------------
+PROCESS LIST
+----------------------------------------
+
+PID     PPID    COMM
+1       0       systemd
+3124    1452    python3
+3131    1452    nc
+3148    1452    python3
+
+
+----------------------------------------
+PROCESS TREE
+----------------------------------------
+
+systemd(1)
+ ├─sshd(1200)
+ ├─bash(1452)
+ │   ├─python3(3124)
+ │   ├─nc(3131)
+ │   └─python3(3148)
+
+
+----------------------------------------
+NETWORK CONNECTIONS
+----------------------------------------
+
+Proto  Local Address     Foreign Address   State        PID   Process
+tcp    0.0.0.0:22        0.0.0.0:0         LISTEN       1200  sshd
+tcp    0.0.0.0:8080      0.0.0.0:0         LISTEN       3124  python3
+tcp    0.0.0.0:9999      0.0.0.0:0         LISTEN       3131  nc
+tcp    127.0.0.1:54321   127.0.0.1:8080    ESTABLISHED  3148  python3
+
+
+----------------------------------------
+KERNEL MODULES
+----------------------------------------
+
+Module                  Size
+ext4                   942080
+overlay                151552
+nf_conntrack           172032
+lime                    98304
+
+
+========================================
+STRINGS ANALYSIS
+========================================
+
+http.server
+http://127.0.0.1:8080
+
+/home/toor/memory-forensics-lab/suspicious_script.py
+
+def suspicious_activity():
+    while True:
+        with open('/etc/passwd', 'r') as f:
+
+
+========================================
+OPEN FILE ANALYSIS
+========================================
+
+3148 python3  /etc/passwd
+
+
+========================================
+ROOTKIT DETECTION OUTPUT
+========================================
+
+=== ROOTKIT DETECTION ANALYSIS ===
+Memory Dump: memory-dump.lime
+Date: Mon Feb 17 18:22:41 UTC 2026
+
+1. Process Count Comparison:
+PSList Count: 128
+PSTree Count: 128
+
+2. Suspicious Kernel Modules:
+lime
+
+3. Suspicious Network Connections:
+tcp 0.0.0.0:8080 LISTEN 3124 python3
+tcp 0.0.0.0:9999 LISTEN 3131 nc
+
+4. Hidden/Deleted File Handles:
+
+=== ROOTKIT CHECK COMPLETE ===
+
+✔ No hidden processes
+✔ No malicious kernel modules
+✔ Suspicious network services identified (lab-created)
+
+
+========================================
+ADVANCED ROOTKIT DETECTION
+========================================
+
+ADVANCED ROOTKIT DETECTION
+==========================
+Memory Dump: memory-dump.lime
+
+Process Count PSList: 128
+Process Count PSTree: 128
+
+Suspicious Kernel Modules:
+lime
+
+Suspicious Network Connections:
+0.0.0.0:8080
+0.0.0.0:9999
+
+Deleted or Hidden File Handles:
+
+Rootkit detection complete.
+
+✔ No hidden processes
+✔ No advanced rootkit artifacts detected
+
+
+========================================
+SIGNATURE ANALYSIS
+========================================
+
+MEMORY SIGNATURE ANALYSIS
+========================
+Not found: meterpreter
+Not found: metasploit
+Not found: payload
+Not found: shellcode
+Not found: backdoor
+Not found: rootkit
+Not found: keylogger
+Not found: botnet
+Not found: trojan
+Not found: ransomware
+Signature analysis complete.
+
+No known malware signatures detected.
+
+
+========================================
+FINAL REPORT GENERATION
+========================================
+
+Generating final forensic report...
+
+FORENSIC_REPORT_LAB-MF-20260217.txt created successfully.
+
+
+========================================
+ARCHIVE CREATION
+========================================
+
+-rw-r--r-- 1 toor toor 2.4M memory-forensics-analysis-20260217.tar.gz
+
+Total analysis files:
+34
+
+
+========================================
+LAB COMPLETION SUMMARY
+========================================
+
+✔ Installed Volatility 2 & 3
+✔ Compiled and used LiME
+✔ Created full memory dump (~3.9GB)
+✔ Identified suspicious processes
+✔ Extracted memory artifacts
+✔ Performed rootkit detection
+✔ Conducted malware signature scan
+✔ Generated forensic report
+✔ Archived all evidence
+
+========================================
+END OF LAB 03 OUTPUT
+========================================
