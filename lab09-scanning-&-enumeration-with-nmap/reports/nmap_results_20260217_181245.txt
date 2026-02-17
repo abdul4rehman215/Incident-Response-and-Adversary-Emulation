@@ -1,0 +1,17 @@
+=========================================
+ NMAP RESULTS ANALYSIS
+=========================================
+
+Total open ports found: 9
+
+Services discovered:
+===================
+ssh
+http
+ipp
+
+Potential security concerns:
+============================
+
+Analysis complete.
+✔ Successfully aggregated findings from all result files.
