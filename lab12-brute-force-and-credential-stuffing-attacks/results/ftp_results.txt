@@ -1,3 +1,4 @@
 [21][ftp] host: 127.0.0.1   login: admin   password: admin
 [21][ftp] host: 127.0.0.1   login: testuser1   password: password123
-✔ 2 compromised FTP accounts identified.
+
+# ✔ 2 compromised FTP accounts identified.
