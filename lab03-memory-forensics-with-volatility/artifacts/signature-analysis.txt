@@ -1,0 +1,14 @@
+MEMORY SIGNATURE ANALYSIS
+========================
+Not found: meterpreter
+Not found: metasploit
+Not found: payload
+Not found: shellcode
+Not found: backdoor
+Not found: rootkit
+Not found: keylogger
+Not found: botnet
+Not found: trojan
+Not found: ransomware
+Signature analysis complete.
+No known malware signatures detected.
