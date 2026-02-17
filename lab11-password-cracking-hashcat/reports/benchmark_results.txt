@@ -3,7 +3,7 @@
 Hash_Type	   Speed
 MD5      	  28.5 GH/s
 NTLM	      32.8 GH/s
-SHA-256	    950 MH/s
+SHA-256	     950 MH/s
 bcrypt  	  950 H/s
 
 🚨 bcrypt dramatically slower → much stronger security.
