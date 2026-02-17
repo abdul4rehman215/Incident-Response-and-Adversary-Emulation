@@ -109,13 +109,19 @@ lab11-password-cracking-hashcat/
 ├── cracked/
 │ ├── md5_cracked.txt
 │ ├── sha256_cracked.txt
-│ └── final_report.txt
+│ ├── md5_simple_cracked.txt
+│ ├── md5_combo_test_cracked.txt
+│ └── top1m_cracked.txt
 │
 ├── wordlists/
 │ ├── custom_wordlist.txt
-│ ├── numeric.txt
 │ ├── left.txt
 │ └── right.txt
+│
+├── reports/ 
+│ ├── benchmark_results.txt
+│ ├── metric_report.txt
+│ └── final_report.txt
 │
 ├── scripts/
 │ ├── performance_test.sh
