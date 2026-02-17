@@ -1,0 +1,16 @@
+[DEFAULT]
+bantime = 600
+findtime = 300
+maxretry = 3
+
+[vsftpd]
+enabled = true
+port = ftp
+logpath = /var/log/vsftpd.log
+maxretry = 3
+
+[apache-auth]
+enabled = true
+port = http,https
+logpath = /var/log/apache2/error.log
+maxretry = 3
