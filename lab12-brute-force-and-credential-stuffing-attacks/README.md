@@ -6,7 +6,7 @@
 
 This lab demonstrates practical brute-force and credential stuffing attack methodologies using real-world tools in a controlled cloud lab environment.
 
-Students will simulate:
+I will simulate:
 
 - FTP brute-force attacks
 - HTTP Basic Authentication brute-force
@@ -320,4 +320,3 @@ All testing performed:
 Unauthorized testing outside lab environments is illegal.
 
 ---
-
