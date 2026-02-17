@@ -231,6 +231,9 @@ Defense successfully mitigated brute-force attempts.
 
 ---
 
+## 📁 Repository Structure
+
+```
 lab12-bruteforce-credential-stuffing/
 │
 ├── README.md
@@ -259,10 +262,10 @@ lab12-bruteforce-credential-stuffing/
 │
 ├── reports/
 │   └── security_report.md
-
-
+```
 
 ---
+
 ## 🧠 Real-World Relevance
 
 This lab simulates real-world attack scenarios:
