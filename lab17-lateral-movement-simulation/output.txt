@@ -1,0 +1,159 @@
+========================================
+Task 1 – System Update
+========================================
+
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Get:2 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Fetched 126 kB in 1s (244 kB/s)
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+0 upgraded, 0 newly installed, 0 to remove.
+
+
+========================================
+SSH Service Verification
+========================================
+
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled)
+   Active: active (running)
+
+
+========================================
+Directory Structure Created
+========================================
+
+c2
+agents
+pivot
+scripts
+logs
+network
+
+
+========================================
+Simulated C2 Server Start
+========================================
+
+[+] Simulated C2 Server running on port 8080
+
+
+========================================
+Beacon Agent Output
+========================================
+
+[2026-02-18 16:10:22.332221] Beacon sent | Status: 200
+[2026-02-18 16:10:35.883211] Beacon sent | Status: 200
+[2026-02-18 16:10:47.112921] Beacon sent | Status: 200
+
+
+========================================
+C2 Server Console Logs
+========================================
+
+127.0.0.1 - - "GET / HTTP/1.1" 200 -
+127.0.0.1 - - "GET / HTTP/1.1" 200 -
+127.0.0.1 - - "GET / HTTP/1.1" 200 -
+
+
+========================================
+Lateral Movement via SSH
+========================================
+
+pivotuser@localhost's password:
+Welcome to Ubuntu 24.04.1 LTS
+
+pivotuser
+
+logout
+Connection to localhost closed.
+
+
+========================================
+Pivoting (Port Forwarding Test)
+========================================
+
+curl http://localhost:9090
+
+{"status":"ok","command":"none","timestamp":"2026-02-18T16:20:44.223112"}
+
+
+========================================
+Network Interface Enumeration
+========================================
+
+2: eth0: <BROADCAST,MULTICAST,UP>
+    inet 172.31.10.219/20
+
+
+========================================
+Open Services (netstat)
+========================================
+
+tcp   0   0 0.0.0.0:8080   LISTEN   15520/python3
+tcp   0   0 0.0.0.0:22     LISTEN   1122/sshd
+
+
+========================================
+Traffic Capture (tcpdump)
+========================================
+
+GET / HTTP/1.1
+Host: localhost:8080
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+
+GET / HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/7.81.0
+
+
+========================================
+Persistence Simulation
+========================================
+
+[+] Persistence simulated
+
+nohup python3 ~/lab17-simulation/agents/beacon_agent.py &
+
+
+========================================
+Detection Script Output
+========================================
+
+=== Detection Test ===
+
+[1] Checking beacon processes...
+toor    15522  0.1  python3 agents/beacon_agent.py
+
+[2] Checking listening ports...
+tcp 0 0 0.0.0.0:8080 LISTEN 15520/python3
+
+[3] Checking SSH sessions...
+pivotuser pts/1  16:20
+toor       pts/0  16:05
+
+
+========================================
+Cleanup Verification
+========================================
+
+Beacon process terminated.
+C2 server terminated.
+Lab directory removed.
+
+========================================
+Expected Outcomes Achieved
+========================================
+
+✔ Simulated C2 server operational
+✔ Beacon agent communicating with jitter
+✔ User-Agent rotation implemented
+✔ SSH lateral movement simulated
+✔ SSH port forwarding pivot successful
+✔ Network services identified
+✔ C2 traffic captured via tcpdump
+✔ Persistence mechanism simulated
+✔ Detection script validated
+✔ Cleanup performed successfully
+
