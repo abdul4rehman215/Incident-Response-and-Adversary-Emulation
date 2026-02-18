@@ -1,0 +1,8 @@
+Rule: 5710 (level 7) -> 'SSH brute force attempt detected'
+Src IP: 127.0.0.1
+
+Rule: 31103 (level 10) -> 'SQL Injection attempt detected'
+Src IP: 127.0.0.1
+
+Rule: 550 (level 5) -> 'Suspicious file added'
+File: /tmp/malware_test/suspicious.exe
