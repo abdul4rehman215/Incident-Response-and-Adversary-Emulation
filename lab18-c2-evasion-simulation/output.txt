@@ -1,0 +1,130 @@
+========================================
+Task 1 – System Update
+========================================
+
+Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease
+Get:2 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Fetched 114 kB in 1s (215 kB/s)
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Calculating upgrade... Done
+0 upgraded, 0 newly installed, 0 to remove.
+
+
+========================================
+Package Installation
+========================================
+
+python3 is already the newest version (3.8.10-0ubuntu1).
+net-tools installed.
+tcpdump installed.
+Setting up tcpdump (4.9.3-4ubuntu0.1) ...
+Processing triggers for man-db ...
+
+
+========================================
+Directory Structure Verification
+========================================
+
+drwxr-xr-x 6 toor toor 4096 Feb 18 14:02 .
+drwxr-xr-x 8 toor toor 4096 Feb 18 14:02 ..
+drwxr-xr-x 2 toor toor 4096 server
+drwxr-xr-x 2 toor toor 4096 implant
+drwxr-xr-x 2 toor toor 4096 scripts
+drwxr-xr-x 2 toor toor 4096 logs
+
+
+========================================
+C2 Server Startup
+========================================
+
+[+] Simulated C2 Server running on port 8080
+
+
+========================================
+Beacon Implant Output
+========================================
+
+[2026-02-18 14:12:01.132442] Beacon sent. Status: 200
+[2026-02-18 14:12:12.983214] Beacon sent. Status: 200
+[2026-02-18 14:12:20.442321] Beacon sent. Status: 200
+[2026-02-18 14:12:34.554211] Beacon sent. Status: 200
+
+
+========================================
+Server Console Logs
+========================================
+
+127.0.0.1 - - [18/Feb/2026 14:12:01] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2026 14:12:12] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2026 14:12:20] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [18/Feb/2026 14:12:34] "GET / HTTP/1.1" 200 -
+
+
+========================================
+Network Traffic Capture (tcpdump)
+========================================
+
+GET / HTTP/1.1
+Host: localhost:8080
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+
+GET / HTTP/1.1
+Host: localhost:8080
+User-Agent: Mozilla/5.0 (X11; Linux x86_64)
+
+GET / HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/7.68.0
+
+
+========================================
+Persistence Script Execution
+========================================
+
+[+] Persistence simulation added to bashrc
+
+nohup python3 ~/c2-simulation/implant/beacon.py &
+
+
+========================================
+Domain Fronting Simulation
+========================================
+
+Simulating domain fronting...
+{"status": "ok", "command": "none", "timestamp": "2026-02-18T14:15:12.992211"}
+
+
+========================================
+Detection Script Output
+========================================
+
+Checking for beacon processes...
+toor  14234  0.2  1.2  python3 beacon.py
+
+Checking open connections...
+tcp  0  0 0.0.0.0:8080  LISTEN  13212/python3
+
+
+========================================
+Expected Outcomes Achieved
+========================================
+
+✔ Simulated C2 server operational
+✔ Beacon implant communicating with jitter
+✔ User-Agent rotation observed
+✔ Anti-analysis checks implemented
+✔ Persistence simulation configured
+✔ Domain fronting simulation successful
+✔ Network traffic captured and analyzed
+✔ Detection validation script working
+
+
+========================================
+Cleanup Verification
+========================================
+
+Beacon process terminated.
+C2 server terminated.
+Simulation directory removed successfully.
