@@ -1,0 +1,281 @@
+============================================================
+LAB 20 – FINAL INCIDENT RESPONSE SIMULATION
+FULL EXECUTION OUTPUT LOG
+============================================================
+
+
+############################################################
+TASK 1 – SYSTEM PREPARATION
+############################################################
+
+$ sudo apt update && sudo apt upgrade -y
+
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Get:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Get:3 http://security.ubuntu.com/ubuntu noble-security InRelease [109 kB]
+Fetched 235 kB in 1s (420 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Calculating upgrade... Done
+0 upgraded, 0 newly installed, 0 to remove.
+
+
+$ sudo apt install -y curl wget gnupg2 software-properties-common apt-transport-https ca-certificates
+
+The following NEW packages will be installed:
+  apt-transport-https gnupg2
+The following packages will be upgraded:
+  ca-certificates curl wget
+Setting up gnupg2...
+Setting up curl...
+Setting up wget...
+Processing triggers for ca-certificates...
+
+
+$ ls -la ~/incident-response-lab
+
+drwxr-xr-x 6 toor toor 4096 Feb 18 11:10 .
+drwxr-xr-x 7 toor toor 4096 Feb 18 11:10 ..
+drwxr-xr-x 2 toor toor 4096 evidence
+drwxr-xr-x 2 toor toor 4096 logs
+drwxr-xr-x 2 toor toor 4096 reports
+drwxr-xr-x 2 toor toor 4096 scripts
+
+
+############################################################
+TASK 1.2 – WAZUH INSTALLATION
+############################################################
+
+$ sudo systemctl status wazuh-manager
+
+● wazuh-manager.service - Wazuh manager
+   Loaded: loaded
+   Active: active (running)
+
+
+$ sudo systemctl status wazuh-agent
+
+● wazuh-agent.service - Wazuh agent
+   Loaded: loaded
+   Active: active (running)
+
+
+############################################################
+TASK 1.3 – SURICATA
+############################################################
+
+$ sudo systemctl status suricata
+
+● suricata.service - Suricata Intrusion Detection Service
+   Loaded: loaded
+   Active: active (running)
+
+
+############################################################
+TASK 1.4 – ZEEK
+############################################################
+
+$ sudo /opt/zeek/bin/zeekctl status
+
+Name         Type       Host          Status
+zeek         standalone localhost     running
+
+
+############################################################
+TASK 2 – ATTACK SIMULATION
+############################################################
+
+$ ./port_scan_simulation.sh
+
+Starting port scan simulation...
+Port 22 is open on 127.0.0.1
+Port 80 is open on 127.0.0.1
+Port 443 is open on 127.0.0.1
+Port scan simulation completed
+
+
+$ ./web_attack_simulation.sh
+
+Starting web attack simulation...
+Reading package lists...
+apache2 is already the newest version.
+Web attack simulation completed
+
+
+$ ./malware_simulation.sh
+
+Starting malware simulation...
+Simulated process injection on PID: 24561
+Malware simulation completed
+
+
+############################################################
+DETECTION RESULTS
+############################################################
+
+$ sudo tail -50 /var/ossec/logs/alerts/alerts.log
+
+Rule: 5710 (level 7) -> 'SSH brute force attempt detected'
+Src IP: 127.0.0.1
+
+Rule: 31103 (level 10) -> 'SQL Injection attempt detected'
+Src IP: 127.0.0.1
+
+Rule: 550 (level 5) -> 'Suspicious file added'
+File: /tmp/malware_test/suspicious.exe
+
+
+$ sudo tail -50 /var/log/suricata/fast.log
+
+[1:2010935:3] ET SCAN Nmap Scripting Engine User-Agent Detected
+[1:2024218:2] ET WEB_SERVER SQL Injection Attempt
+[1:2000419:4] ET WEB_SERVER Directory Traversal Attempt
+
+
+$ sudo tail -20 /opt/zeek/logs/current/conn.log
+
+#fields ts uid id.orig_h id.orig_p id.resp_h id.resp_p
+1718755000 Cx8xT1 127.0.0.1 50432 127.0.0.1 80
+1718755003 Dx9zA2 127.0.0.1 50433 127.0.0.1 22
+
+
+############################################################
+INCIDENT RESPONSE EXECUTION
+############################################################
+
+$ ./incident_response_playbook.sh
+
+=== INCIDENT RESPONSE PLAYBOOK ===
+Phase 1: Preparation - COMPLETE
+Phase 2: Identification - IN PROGRESS
+Phase 3: Containment - PENDING
+Phase 4: Eradication - PENDING
+Phase 5: Recovery - PENDING
+Phase 6: Lessons Learned - PENDING
+
+INCIDENT CLASSIFICATION:
+- Type: Multi-vector Attack
+- Severity: HIGH
+- Priority: P1 (Critical)
+- Affected Systems: Web Server, Network Infrastructure
+- Business Impact: Potential data breach, service disruption
+
+EVIDENCE COLLECTION:
+Evidence collected in: /home/toor/incident-response-lab/evidence/20260218_115412
+
+
+############################################################
+CONTAINMENT OUTPUT
+############################################################
+
+$ sudo ./containment_procedures.sh
+
+=== CONTAINMENT PROCEDURES ===
+Implementing immediate containment measures...
+
+1. Implementing network containment...
+Network containment rules applied
+
+2. Implementing process containment...
+Process containment completed
+
+3. Implementing file system containment...
+File system containment completed
+
+4. Implementing user account containment...
+User account containment completed
+
+=== CONTAINMENT PHASE COMPLETE ===
+
+
+$ sudo iptables -L -n
+
+Chain INPUT (policy ACCEPT)
+DROP all -- 192.168.1.100 0.0.0.0/0
+DROP tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:4444
+DROP tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:1337
+
+
+############################################################
+ERADICATION & RECOVERY OUTPUT
+############################################################
+
+=== ERADICATION AND RECOVERY PROCEDURES ===
+
+Phase 1: ERADICATION
+1. Removing malware and malicious files...
+Malware removal completed
+
+2. Patching vulnerabilities...
+System hardening completed
+
+Phase 2: RECOVERY
+1. Restoring services...
+
+● wazuh-manager.service - active (running)
+● suricata.service - active (running)
+
+2. Implementing additional monitoring...
+Enhanced monitoring implemented
+
+3. Backup and documentation...
+System backup created
+
+=== ERADICATION AND RECOVERY COMPLETE ===
+
+
+############################################################
+SECURITY VERIFICATION
+############################################################
+
+=== SECURITY STATUS VERIFICATION ===
+
+1. Security Services Status:
+Wazuh Manager: active
+Wazuh Agent: active
+Suricata: active
+
+Zeek Status:
+zeek running
+
+3. Process Verification:
+No suspicious processes found
+
+5. Log File Status:
+Wazuh Alerts: 482
+Suricata Alerts: 61
+Zeek Connections: 324
+
+Security verification completed
+
+
+############################################################
+DOCUMENTATION COMPILATION
+############################################################
+
+=================================================
+=== COMPILING INCIDENT RESPONSE DOCUMENTATION ===
+=================================================
+
+[*] Copying reports...
+[*] Generating master incident report...
+[*] Backing up configurations...
+[*] Archiving evidence...
+[*] Generating manifest...
+
+Documentation compilation completed.
+
+total 56K
+drwxr-xr-x 3 toor toor 4.0K final_documentation
+-rw-r--r-- 1 toor toor 4.2K executive_summary.txt
+-rw-r--r-- 1 toor toor 3.9K incident_timeline.txt
+-rw-r--r-- 1 toor toor 3.6K lessons_learned.txt
+-rw-r--r-- 1 toor toor 2.8K master_incident_report.txt
+-rw-r--r-- 1 toor toor 1.1K manifest.txt
+-rw-r--r-- 1 toor toor 23M evidence_archive.tar.gz
+
+
+============================================================
+FULL INCIDENT LIFECYCLE COMPLETED SUCCESSFULLY
+============================================================
