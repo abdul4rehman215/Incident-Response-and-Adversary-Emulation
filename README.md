@@ -470,6 +470,10 @@ Happy Building & Defending 🛡🚀
 **Abdul Rehman**  
 Cyber Security • SOC • Detection Engineering • DFIR • Security Automation  
 
+If this repository adds value, consider starring it ⭐
+
+### 📧 Reach Out
+
   <a href="https://github.com/abdul4rehman215">
     <img src="https://img.shields.io/badge/Follow-181717?style=for-the-badge&logo=github&logoColor=white" alt="Follow" />
   </a>  
