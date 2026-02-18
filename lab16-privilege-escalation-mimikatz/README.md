@@ -124,7 +124,7 @@ lab16-privilege-escalation-mimikatz/
 ├── README.md
 ├── commands.sh
 ├── output.txt
-├── interview.md
+├── interview_qna.md
 ├── troubleshooting.md
 │
 └── scripts/
@@ -134,10 +134,8 @@ lab16-privilege-escalation-mimikatz/
 ├── privilege_check.ps1
 ├── implement_defenses.py
 ├── monitor_credential_access.py
-├── simulated_lsass.dmp
-├── credentials.json
-├── extraction_report.json
-├── password_security_report.json
+│
+└── reports/
 ├── assessment_results.json
 └── hardening_report.json
 
