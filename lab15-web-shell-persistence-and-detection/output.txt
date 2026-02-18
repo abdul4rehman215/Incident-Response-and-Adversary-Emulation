@@ -1,0 +1,184 @@
+===============================
+Environment Verification
+===============================
+
+PRETTY_NAME="Ubuntu 24.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.1 LTS (Noble Numbat)"
+
+/home/toor
+
+
+===============================
+Apache Service Status
+===============================
+
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; enabled)
+     Active: active (running) since Mon 2026-02-17 14:11:22 UTC; 15s ago
+
+
+===============================
+Directory Verification
+===============================
+
+drwxr-xr-x 2 www-data www-data 4096 Feb 17 14:12 /var/www/html/testapp
+
+
+===============================
+File Listing After Creation
+===============================
+
+-rw-r--r-- 1 www-data www-data 128 Feb 17 14:15 about.php
+-rw-r--r-- 1 www-data www-data 142 Feb 17 14:15 contact.php
+-rw-r--r-- 1 www-data www-data 453 Feb 17 14:14 index.php
+
+
+===============================
+Web Shell Testing via curl
+===============================
+
+www-data
+
+/var/www/html/testapp
+
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+
+about.php
+contact.php
+index.php
+shell_basic.php
+shell_advanced.php
+config.php
+uploads
+.hidden
+
+Linux ip-172-31-10-248 6.8.0-xx-generic #xx-Ubuntu SMP x86_64 GNU/Linux
+
+
+===============================
+Apache Access Log Entries
+===============================
+
+127.0.0.1 - - [17/Feb/2026:14:21:15 +0000] "GET /testapp/shell_basic.php?cmd=ls HTTP/1.1" 200 245 "-" "curl/8.5.0"
+127.0.0.1 - - [17/Feb/2026:14:21:16 +0000] "GET /testapp/uploads/image.php?cmd=uname HTTP/1.1" 200 112 "-" "curl/8.5.0"
+127.0.0.1 - - [17/Feb/2026:14:21:17 +0000] "POST /testapp/config.php HTTP/1.1" 200 532 "-" "curl/8.5.0"
+
+
+===============================
+webshell_detector.sh Output
+===============================
+
+Starting Web Shell Scan...
+================================
+[!] Suspicious function 'system' found in /var/www/html/testapp/shell_basic.php
+[!] Suspicious function 'system' found in /var/www/html/testapp/uploads/image.php
+[!] Suspicious function 'system' found in /var/www/html/testapp/.hidden/admin.php
+[!] Suspicious function 'eval' found in /var/www/html/testapp/config.php
+================================
+Scan complete.
+
+
+===============================
+log_analyzer.sh Output
+===============================
+
+======================================
+        Web Log Analysis Report
+======================================
+
+[1] Suspicious Parameters (cmd=, exec=, x=)
+GET /testapp/shell_basic.php?cmd=ls
+POST /testapp/config.php
+
+[2] Suspicious User Agents (curl, wget, python)
+curl/8.5.0
+
+[3] POST Requests to PHP Files
+POST /testapp/config.php HTTP/1.1
+
+[4] High Frequency Requests by IP
+     15 127.0.0.1
+
+[5] Total Requests: 28
+======================================
+
+
+===============================
+realtime_monitor.sh Output
+===============================
+
+Starting Real-Time Web Shell Monitor...
+Alerts will be written to /home/toor/webshell_alerts.log
+Monitoring file changes in /var/www/html...
+[ALERT] Mon Feb 17 14:28:11 UTC 2026 - Suspicious request from 127.0.0.1
+
+
+===============================
+webshell_remover.sh Output
+===============================
+
+================================
+Web Shell Removal Tool
+================================
+Continue? (y/N): y
+Scanning for web shells...
+[QUARANTINED] /var/www/html/testapp/shell_basic.php - Reason: Suspicious function: system
+[QUARANTINED] /var/www/html/testapp/uploads/image.php - Reason: Suspicious function: system
+[QUARANTINED] /var/www/html/testapp/.hidden/admin.php - Reason: Suspicious function: system
+[QUARANTINED] /var/www/html/testapp/config.php - Reason: Suspicious function: eval
+Securing directories...
+Removal complete.
+Quarantine: /home/toor/webshell_quarantine
+Backup: /home/toor/webshell_backup_20260217_142935
+
+
+===============================
+verify_cleanup.sh Output
+===============================
+
+================================
+Cleanup Verification Report
+================================
+
+[1] Scanning for remaining suspicious PHP files...
+
+[2] Checking directory permissions...
+drwxr-xr-x /var/www/html
+drwxr-xr-x /var/www/html/testapp
+
+[3] Checking .htaccess in uploads...
+.htaccess exists in uploads.
+
+[4] Checking recent suspicious log entries...
+GET /testapp/shell_basic.php?cmd=whoami
+
+Verification complete.
+
+
+===============================
+webshell_dashboard.sh Output
+===============================
+
+========================================
+        Web Shell Monitoring Dashboard
+========================================
+Current Time: Mon Feb 17 14:35:41 UTC 2026
+
+[1] Total PHP Files:
+3
+
+[2] Suspicious Function Occurrences:
+0
+
+[3] Total Web Requests:
+34
+
+[4] Top 5 Active IPs:
+     34 127.0.0.1
+
+[5] Recent Alerts:
+[ALERT] Mon Feb 17 14:28:11 UTC 2026 - Suspicious request from 127.0.0.1
+
+========================================
