@@ -1,4 +1,4 @@
-# 🎤 Interview Questions & Answers - Lab 20: Final Incident Response Simulation
+# 🎤 Interview Q&A - Lab 20: Final Incident Response Simulation
 
 ---
 
