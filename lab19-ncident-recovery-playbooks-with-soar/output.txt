@@ -1,0 +1,276 @@
+===========================================================
+LAB 19 – Incident Recovery Playbooks with SOAR
+Output Log
+===========================================================
+
+
+-----------------------------------------------------------
+Project Structure Creation
+-----------------------------------------------------------
+
+$ mkdir -p ~/soar-lab/{thehive,cortex,data,playbooks,integration}
+$ cd ~/soar-lab
+$ ls -la
+
+drwxr-xr-x 6 toor toor 4096 Feb 18 10:02 .
+drwxr-xr-x 5 toor toor 4096 Feb 18 10:02 ..
+drwxr-xr-x 2 toor toor 4096 Feb 18 10:02 cortex
+drwxr-xr-x 2 toor toor 4096 Feb 18 10:02 data
+drwxr-xr-x 2 toor toor 4096 Feb 18 10:02 integration
+drwxr-xr-x 2 toor toor 4096 Feb 18 10:02 playbooks
+drwxr-xr-x 2 toor toor 4096 Feb 18 10:02 thehive
+
+
+-----------------------------------------------------------
+Docker Compose Validation
+-----------------------------------------------------------
+
+$ docker compose config
+
+services:
+  cortex:
+    container_name: cortex
+    image: thehiveproject/cortex:3.1.7
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+  thehive:
+    container_name: thehive
+    image: thehiveproject/thehive4:4.1.24
+networks:
+  soar-net:
+    driver: bridge
+
+Configuration valid
+
+
+-----------------------------------------------------------
+Launching SOAR Stack
+-----------------------------------------------------------
+
+$ docker compose up -d
+
+[+] Running 3/3
+ ✔ Network soar-lab_soar-net     Created
+ ✔ Container elasticsearch       Started
+ ✔ Container cortex              Started
+ ✔ Container thehive             Started
+
+
+$ sleep 120
+
+
+$ docker compose ps
+
+NAME            IMAGE                                           STATUS
+elasticsearch   docker.elastic.co/elasticsearch/elasticsearch   Up 2 minutes
+cortex          thehiveproject/cortex:3.1.7                     Up 2 minutes
+thehive         thehiveproject/thehive4:4.1.24                  Up 2 minutes
+
+
+-----------------------------------------------------------
+Elasticsearch Health Check
+-----------------------------------------------------------
+
+$ curl http://localhost:9200/_cluster/health
+
+{
+  "cluster_name" : "hive",
+  "status" : "green",
+  "number_of_nodes" : 1,
+  "active_primary_shards" : 1,
+  "active_shards" : 1
+}
+
+
+-----------------------------------------------------------
+TheHive API Status
+-----------------------------------------------------------
+
+$ curl http://localhost:9000/api/status
+
+{
+  "status": "OK",
+  "version": "4.1.24"
+}
+
+
+-----------------------------------------------------------
+Malware Playbook Execution
+-----------------------------------------------------------
+
+$ python3 playbooks/malware_playbook.py
+
+{
+    "case_id": "CASE-4821",
+    "malicious_hashes": [
+        "d41d8cd98f00b204e9800998ecf8427e"
+    ],
+    "containment_actions": [
+        {
+            "host": "192.168.1.100",
+            "status": "isolated",
+            "method": "firewall block",
+            "timestamp": "2026-02-18T10:14:23.493221"
+        },
+        {
+            "indicator": "d41d8cd98f00b204e9800998ecf8427e",
+            "blocked_at": "2026-02-18T10:14:23.493233"
+        }
+    ],
+    "execution_log": [
+        {
+            "action": "create_case",
+            "case": {
+                "id": "CASE-4821",
+                "title": "Suspicious File Detected",
+                "description": "Potential malware on workstation",
+                "severity": 3,
+                "created_at": "2026-02-18T10:14:23.493189"
+            }
+        }
+    ]
+}
+
+
+-----------------------------------------------------------
+Phishing Playbook Execution
+-----------------------------------------------------------
+
+$ python3 playbooks/phishing_playbook.py
+
+{
+    "header_analysis": {
+        "spf_fail": true,
+        "dkim_missing": true,
+        "dmarc_fail": true,
+        "risk_score": 80
+    },
+    "url_analysis": [
+        {
+            "url": "http://malicious-site.com/verify",
+            "domain": "malicious-site.com",
+            "risk_score": 84,
+            "malicious": true
+        }
+    ],
+    "quarantine": {
+        "criteria": {
+            "sender": "noreply@suspicious-domain.com",
+            "subject": "Urgent: Verify Your Account"
+        },
+        "quarantined_count": 3,
+        "timestamp": "2026-02-18T10:22:41.182331"
+    },
+    "blocked_urls": [
+        {
+            "url": "http://malicious-site.com/verify",
+            "blocked_at": "2026-02-18T10:22:41.182356"
+        }
+    ],
+    "notifications": [
+        {
+            "user": "user1@company.com",
+            "message": "Security Alert: Suspicious email detected. Indicators: ['http://malicious-site.com/verify']",
+            "sent_at": "2026-02-18T10:22:41.182369"
+        },
+        {
+            "user": "user2@company.com",
+            "message": "Security Alert: Suspicious email detected. Indicators: ['http://malicious-site.com/verify']",
+            "sent_at": "2026-02-18T10:22:41.182372"
+        }
+    ],
+    "execution_log": [
+        ...
+    ]
+}
+
+
+-----------------------------------------------------------
+SIEM Integration Execution
+-----------------------------------------------------------
+
+$ python3 integration/siem_integration.py
+
+[+] Processing malware alert with severity high
+
+{
+    "case_id": "CASE-7392",
+    "malicious_hashes": [
+        "abc123def456"
+    ],
+    "containment_actions": [
+        {
+            "host": "192.168.1.100",
+            "status": "isolated",
+            "method": "firewall block",
+            "timestamp": "2026-02-18T10:26:12.552193"
+        },
+        {
+            "indicator": "abc123def456",
+            "blocked_at": "2026-02-18T10:26:12.552205"
+        }
+    ],
+    "execution_log": [...]
+}
+
+--------------------------------------------------
+
+[+] Processing phishing alert with severity medium
+
+{
+    "header_analysis": {
+        "spf_fail": true,
+        "dkim_missing": true,
+        "dmarc_fail": true,
+        "risk_score": 80
+    },
+    "url_analysis": [],
+    "quarantine": {
+        "criteria": {
+            "sender": "attacker@evil.com",
+            "subject": "Urgent Action Required"
+        },
+        "quarantined_count": 2,
+        "timestamp": "2026-02-18T10:26:13.551102"
+    },
+    "blocked_urls": [],
+    "notifications": [
+        {
+            "user": "user@company.com",
+            "message": "Security Alert: Suspicious email detected. Indicators: []",
+            "sent_at": "2026-02-18T10:26:13.551128"
+        }
+    ],
+    "execution_log": [...]
+}
+
+-----------------------------------------------------------
+
+
+-----------------------------------------------------------
+Container Verification
+-----------------------------------------------------------
+
+$ docker compose ps
+
+NAME            STATUS
+elasticsearch   Up
+cortex          Up
+thehive         Up
+
+
+-----------------------------------------------------------
+Port Verification
+-----------------------------------------------------------
+
+$ netstat -tuln | grep -E '9000|9001|9200'
+
+tcp6       0      0 :::9000                 :::*                    LISTEN
+tcp6       0      0 :::9001                 :::*                    LISTEN
+tcp6       0      0 :::9200                 :::*                    LISTEN
+
+
+===========================================================
+END OF LAB 19 OUTPUT
+===========================================================
