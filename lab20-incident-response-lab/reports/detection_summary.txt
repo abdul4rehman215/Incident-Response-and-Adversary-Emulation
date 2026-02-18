@@ -1,0 +1,42 @@
+INCIDENT DETECTION SUMMARY 
+========================== 
+Date: $(date) 
+Analyst: Security Student 
+DETECTED EVENTS: 
+1. Port Scanning Activity 
+- Source: 127.0.0.1 
+- Target: 127.0.0.1 
+- Ports Scanned: 22, 80, 443, 3389, 445, 135, 53, 161, 123 
+- Detection Tool: Suricata, Zeek 
+2. Web Application Attacks 
+- SQL Injection Attempts 
+- Cross-Site Scripting (XSS) 
+- Directory Traversal 
+- Brute Force Login Attempts 
+- Detection Tool: Wazuh, Suricata 
+3. Malware-like Behavior 
+- Suspicious File Creation 
+- DNS Queries to Malicious Domains 
+- Process Injection Simulation 
+- Detection Tool: Wazuh, Zeek 
+SEVERITY: HIGH 
+STATUS: UNDER INVESTIGATION 
+Verify:
+cat ~/incident-response-lab/reports/detection_summary.txt
+Output:
+INCIDENT DETECTION SUMMARY
+==========================
+Date: Tue Feb 18 11:45:03 UTC 2026
+Analyst: Security Student
+...
+SEVERITY: HIGH
+STATUS: UNDER INVESTIGATION
+________________________________________
+🔹 SOC Detection Phase Complete
+We successfully validated:
+✔ Port scanning detected (Suricata + Zeek)
+✔ SQL injection detected (Wazuh + Suricata)
+✔ Directory traversal detected
+✔ Brute force attempts logged
+✔ Suspicious file creation detected
+✔ DNS queries logged
