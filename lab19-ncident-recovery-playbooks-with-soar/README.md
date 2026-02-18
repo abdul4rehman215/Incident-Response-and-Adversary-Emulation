@@ -69,18 +69,17 @@ lab19-soar-incident-recovery/
 │
 ├── docker-compose.yml
 │
-├── thehive/
-│ └── application.conf
-│
-├── cortex/
-│ └── application.conf
+├── configs/
+│ ├── docker-compose.yml
+│ ├── thehive-application.conf
+│ └── cortex-application.conf
 │
 ├── playbooks/
 │ ├── malware_response.json
 │ ├── malware_playbook.py
 │ └── phishing_playbook.py
 │
-├── integration/
+├── scripts
 │ └── siem_integration.py
 │
 ├── commands.sh
