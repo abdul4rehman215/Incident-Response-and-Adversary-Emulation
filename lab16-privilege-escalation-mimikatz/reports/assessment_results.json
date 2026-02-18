@@ -1,0 +1,6 @@
+•	OS Version: Windows 10 (Wine simulated)
+•	IsAdmin: False
+•	LSAProtection: 0
+•	Vulnerabilities:
+o	LSA Protection not enabled
+o	User lacks admin privileges
