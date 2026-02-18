@@ -54,15 +54,15 @@ Installed Components:
 
 System version verified using:
 
-```
+`
 cat /etc/os-release
-```
+`
 
 Current working directory verified using:
 
-```
+`
 pwd
-```
+`
 
 ---
 
@@ -135,7 +135,7 @@ lab15-web-shell-persistence-detection/
 ├── README.md
 ├── commands.sh
 ├── output.txt
-├── interview.md
+├── interview_qna.md
 ├── troubleshooting.md
 │
 └── scripts/
@@ -166,6 +166,42 @@ Web shells are one of the most common persistence mechanisms used after exploita
 
 This lab focuses on defensive detection, response automation, and monitoring techniques used in real-world incident response scenarios.
 
+---
+
+# 🌍 Real-World Relevance
+
+Web shells are one of the most common post-exploitation persistence techniques used by attackers after exploiting:
+- File upload vulnerabilities
+- RCE vulnerabilities
+- LFI vulnerabilities
+- CMS plugin exploits
+
+### Security teams must implement: 
+- Continuous scanning
+- Log monitoring
+- File integrity monitoring
+- Automated quarantine
+- Permission hardening
+
+---
+
+# 🎓 What I Learned
+
+- How attackers deploy stealth web shells
+- How to simulate real malicious traffic
+- How to automate detection and response
+- How to integrate monitoring into a response workflow
+- How to verify remediation success
+
+### Understanding web shell detection is essential for:
+- Incident response
+- Threat hunting
+- Web server hardening
+- Continuous monitoring
+- Regular scanning, monitoring, and permission hardening significantly reduce persistence risks in production environments.
+
+---
+
 # 🏁 Conclusion
 
 This lab provided hands-on experience with:
@@ -184,6 +220,8 @@ In this lab, a complete web shell lifecycle was simulated:
 6. Continuous visibility
 This structured approach reflects real-world incident response workflows and strengthens defensive web server security posture.
 
+---
+
 # 🔐 Key Takeaways
 
 - Web shells often rely on system(), exec(), eval()
@@ -192,35 +230,7 @@ This structured approach reflects real-world incident response workflows and str
 - Real-time alerts improve security posture
 - Proper permissions prevent execution abuse
 
-# 🌍 Real-World Relevance
-
-Web shells are one of the most common post-exploitation persistence techniques used by attackers after exploiting:
-- File upload vulnerabilities
-- RCE vulnerabilities
-- LFI vulnerabilities
-- CMS plugin exploits
-
-### Security teams must implement: 
-- Continuous scanning
-- Log monitoring
-- File integrity monitoring
-- Automated quarantine
-- Permission hardening
-
-# 🎓 What I Learned
-
-- How attackers deploy stealth web shells
-- How to simulate real malicious traffic
-- How to automate detection and response
-- How to integrate monitoring into a response workflow
-- How to verify remediation success
-
-### Understanding web shell detection is essential for:
-- Incident response
-- Threat hunting
-- Web server hardening
-- Continuous monitoring
-- Regular scanning, monitoring, and permission hardening significantly reduce persistence risks in production environments.
+---
 
 # 📌 Result
 A complete web shell detection, monitoring, remediation, and verification ecosystem was built and tested successfully within a controlled Apache/PHP environment.
