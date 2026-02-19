@@ -452,25 +452,22 @@ Unauthorized exploitation outside approved environments is illegal and unethical
 This repository reflects **real hands-on security engineering work** — not theoretical notes.
 
 It demonstrates the ability to:
-
 > **Detect • Investigate • Contain • Eradicate • Recover • Automate**
 
-If this project helps you, consider ⭐ starring the repository.
+If this repository adds value, consider starring it ⭐
 
 Happy Building & Defending 🛡🚀
+
+---
 
 <!-- ========================================================= -->
 <!--                   PROFESSIONAL FOOTER                     -->
 <!-- ========================================================= -->
 
----
-
 ## 👨‍💻 Author
 
 **Abdul Rehman**  
 Cyber Security • SOC • Detection Engineering • DFIR • Security Automation  
-
-If this repository adds value, consider starring it ⭐
 
 ### 📧 Reach Out
 
