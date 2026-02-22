@@ -2,7 +2,7 @@
 
 > **SOC Engineering • Detection Engineering • DFIR • Red/Blue Simulation • Security Automation**
 
-A complete 20-lab hands-on security engineering series simulating real-world Security Operations Center (SOC) environments — from digital forensics and network detection to adversary emulation and full incident lifecycle execution.
+### A complete 20-lab hands-on security engineering series simulating real-world Security Operations Center (SOC) environments — from digital forensics and network detection to adversary emulation and full incident lifecycle execution.
 
 ---
 
