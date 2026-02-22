@@ -418,7 +418,11 @@ This repository represents practical implementation — not academic exercises.
 
 # 📊 Security Skills Heatmap
 
-This heatmap reflects practical, hands-on implementation across all 20 labs.
+This heatmap reflects structured, hands-on implementation across all 20 labs in:
+
+Incident Response • Digital Forensics • Detection Engineering • Adversary Simulation • SOC Automation
+
+Exposure bars represent execution depth — from foundational implementation to full end-to-end operational deployment within a simulated SOC environment.
 
 | Skill Area | Exposure Level | Practical Depth | Tools Used |
 |-------------|----------------|----------------|------------|
@@ -443,6 +447,12 @@ This heatmap reflects practical, hands-on implementation across all 20 labs.
 - █████████░ = Advanced Practical Implementation
 - ████████░░ = Strong Working Implementation
 - ██████░░░░ = Foundational Exposure
+
+This heatmap represents operational security engineering capability — not isolated scripting tasks — covering:
+
+Detection → Correlation → Investigation → Containment → Automation → Reporting
+
+It demonstrates applied SOC execution across host, network, and automation layers within controlled enterprise-style lab environments.
 
 ---
 
